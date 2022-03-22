@@ -15,7 +15,10 @@ class DBProvider {
       await db.execute('''
             CREATE TABLE users (
               email TEXT PRIMARY KEY, 
-              password TEXT NOT NULL
+              password TEXT NOT NULL,
+              username TEXT NOT NULL,
+              phoneno TEXT NOT NULL,
+              role TEXT NOT NULL
             )
           ''');
     }, version: 1);
@@ -28,9 +31,15 @@ class DBProvider {
     try {
       res = await db.rawInsert('''
         INSERT INTO users(
-          email, password
-        ) VALUES (?, ?)
-      ''', [newUser.email, newUser.password]);
+          email, password, username, phoneno, role
+        ) VALUES (?, ?, ?, ?, ?)
+      ''', [
+        newUser.email,
+        newUser.password,
+        newUser.username,
+        newUser.phoneno,
+        newUser.role,
+      ]);
     } on Exception {
       print("e-mail address already exists");
       return false;
@@ -39,10 +48,10 @@ class DBProvider {
     return true;
   }
 
-  Future<bool> checkUser(User user) async {
+  Future<bool> checkUser(email, password) async {
     final db = await database;
     var res = await db.rawQuery(
-        "SELECT * FROM users where email='${user.email}' AND password='${user.password}'");
+        "SELECT * FROM users where email='$email' AND password='$password'");
     if (res.isEmpty) return false;
     return true;
   }

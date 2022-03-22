@@ -6,10 +6,13 @@ class MainUserPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Delivery App main page',
       debugShowCheckedModeBanner: false,
-      home: MainUserPage(title: 'Delivery app main page'),
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: const MainUserPage(title: 'Delivery app main page'),
     );
   }
 }
@@ -31,21 +34,21 @@ class MainUserPageState extends State<MainUserPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(widget.title),
-          backgroundColor: Colors.red,
         ),
         body: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(children: <Widget>[
             ElevatedButton(
               child: const Text('Back to login'),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.red,
-              ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const LoginPageWidget()),
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) =>
+                        const LoginPageWidget(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
                 );
               },
             ),

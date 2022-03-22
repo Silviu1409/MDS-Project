@@ -59,7 +59,9 @@ class WelcomePageState extends State<WelcomePage> {
     // );
     slides.add(
       Slide(
-        backgroundImage: "images/slide.png",
+        backgroundImage: ("images/slide.png"),
+        backgroundImageFit: BoxFit.fill,
+        backgroundOpacity: 0,
       ),
     );
   }
@@ -135,7 +137,7 @@ class WelcomePageState extends State<WelcomePage> {
 
         // Show or hide status bar
         hideStatusBar: true,
-        backgroundColorAllSlides: Colors.grey,
+        backgroundColorAllSlides: Colors.transparent,
 
         // Scrollbar
         verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
