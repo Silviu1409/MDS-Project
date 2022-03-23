@@ -5,18 +5,18 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User user) => json.encode(user.toJson);
 
 class User {
-  String? email;
-  String? password;
-  String? username;
-  String? phoneno;
-  String? role;
+  String email;
+  String password;
+  String username;
+  String phoneno;
+  String role;
 
   User({
-    this.email,
-    this.password,
-    this.username,
-    this.phoneno,
-    this.role,
+    required this.email,
+    required this.password,
+    required this.username,
+    required this.phoneno,
+    required this.role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(

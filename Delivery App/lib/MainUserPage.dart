@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
+import 'models/user.dart';
 
 class MainUserPageWidget extends StatelessWidget {
-  const MainUserPageWidget({Key? key}) : super(key: key);
+  const MainUserPageWidget({Key? key, required this.user}) : super(key: key);
+
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +15,15 @@ class MainUserPageWidget extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MainUserPage(title: 'Delivery app main page'),
+      home: MainUserPage(title: 'Delivery app main page', user: user),
     );
   }
 }
 
 class MainUserPage extends StatefulWidget {
-  const MainUserPage({Key? key, required this.title}) : super(key: key);
+  const MainUserPage({Key? key, required this.title, required this.user})
+      : super(key: key);
+  final User user;
   final String title;
 
   @override
@@ -38,6 +43,12 @@ class MainUserPageState extends State<MainUserPage> {
         body: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(children: <Widget>[
+            Text("Hello, ${widget.user.username}!",
+                style: const TextStyle(
+                    fontFamily: 'Lato-Black',
+                    fontSize: 32.0,
+                    color: Colors.red,
+                    fontWeight: FontWeight.w700)),
             ElevatedButton(
               child: const Text('Back to login'),
               onPressed: () {

@@ -48,18 +48,17 @@ class DBProvider {
     return true;
   }
 
-  Future<bool> checkUser(email, password) async {
+  Future<Map<String, Object?>?> checkUser(email, password) async {
     final db = await database;
     var res = await db.rawQuery(
         "SELECT * FROM users where email='$email' AND password='$password'");
-    if (res.isEmpty) return false;
-    return true;
+    if (res.isEmpty) return null;
+    return res[0];
   }
 
   Future<dynamic> getUsers() async {
     final db = await database;
     var res = await db.query("users");
-    print(res);
     if (res.isEmpty) {
       return null;
     } else {
