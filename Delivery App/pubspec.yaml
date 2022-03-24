@@ -71,6 +71,8 @@ flutter:
     - images/photo_pencil.png
     - images/photo_ruler.png
     - images/slide.png
+    - images/background.png
+    - images/logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

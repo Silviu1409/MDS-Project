@@ -50,169 +50,196 @@ class LoginPageState extends State<LoginPage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          color: Colors.white,
-          // decoration: const BoxDecoration(
-          //   image: DecorationImage(
-          //     image: AssetImage("images/slide.png"),
-          //     fit: BoxFit.fill,
-          //   ),
-          // ),
-          child: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.only(top: 50.0),
-              child: Column(
-                children: <Widget>[
-                  //TBD mesaj de login
-                  const Text("Title",
-                      style: TextStyle(
-                          fontFamily: 'Lato-Black',
-                          fontSize: 32.0,
-                          color: Colors.red,
-                          fontWeight: FontWeight.w700)),
-                  Form(
-                    key: formkey,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.all(30),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            autocorrect: false,
-                            onChanged: (value) {
-                              setState(() {
-                                email = value;
-                              });
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                isFormValid = false;
-                                return "* Required";
-                              } else if (!email_regex.hasMatch(value)) {
-                                isFormValid = false;
-                                return "Not a valid email address";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: const InputDecoration(
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 2.0),
-                              ),
-                              hintText: 'Email',
-                              prefixIcon: Icon(Icons.mail_outline),
-                            ),
-                          ),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("images/background.png"),
+                fit: BoxFit.fill,
+              ),
+            ),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.only(top: 50.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: 100.0,
+                      height: 100.0,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('images/logo.png'),
                         ),
-                        Container(
-                          padding: const EdgeInsets.all(30),
-                          child: TextFormField(
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            obscureText: isPasswdHidden,
-                            autocorrect: false,
-                            onChanged: (value) {
-                              setState(() {
-                                password = value;
-                              });
-                            },
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                isFormValid = false;
-                                return "* Required";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: InputDecoration(
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 2.0),
-                              ),
-                              hintText: 'Password',
-                              prefixIcon: const Icon(Icons.password),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  isPasswdHidden
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    //TBD mesaj de login
+                    const Text("Welcome back!",
+                        style: TextStyle(
+                            fontFamily: 'Lato-Black',
+                            fontSize: 32.0,
+                            color: Colors.red,
+                            fontWeight: FontWeight.w700)),
+                    Form(
+                      key: formkey,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: const EdgeInsets.all(30),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              autocorrect: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  email = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  isFormValid = false;
+                                  return "* Required";
+                                } else if (!email_regex.hasMatch(value)) {
+                                  isFormValid = false;
+                                  return "Not a valid email address";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              decoration: const InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
                                 ),
-                                onPressed: () {
-                                  setState(() {
-                                    isPasswdHidden = !isPasswdHidden;
-                                  });
-                                },
+                                hintText: 'Email',
+                                prefixIcon: Icon(Icons.mail_outline),
                               ),
                             ),
                           ),
-                        ),
-                        ElevatedButton(
-                          child: const Text('Login'),
-                          onPressed: () async {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            isFormValid = true;
-                            formkey.currentState!.validate();
-                            if (isFormValid == false) {
-                              print("Form is not valid!");
+                          Container(
+                            padding: const EdgeInsets.all(30),
+                            child: TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              obscureText: isPasswdHidden,
+                              autocorrect: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  password = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  isFormValid = false;
+                                  return "* Required";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              decoration: InputDecoration(
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                hintText: 'Password',
+                                prefixIcon: const Icon(Icons.password),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    isPasswdHidden
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswdHidden = !isPasswdHidden;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            child: const Text('Login'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 100, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            onPressed: () async {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               isFormValid = true;
-                              return;
-                            }
-                            var res =
-                                await DBProvider.db.checkUser(email, password);
-                            if (res == null ||
-                                (email == "" && password == "")) {
-                              print("Could not log in!");
-                            } else {
-                              print("Logged in!");
-                              setState(() {
-                                email = "";
-                                password = "";
-                              });
-                              User user = User(
-                                email: res['email'] as String,
-                                password: res['password'] as String,
-                                phoneno: res['phoneno'] as String,
-                                role: res['role'] as String,
-                                username: res['username'] as String,
-                              );
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation1, animation2) =>
-                                          MainUserPageWidget(user: user),
-                                  transitionDuration: Duration.zero,
-                                  reverseTransitionDuration: Duration.zero,
-                                ),
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(30.0),
-                    child: ElevatedButton(
-                      child: const Text('Register'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder: (context, animation1, animation2) =>
-                                const RegisterPageWidget(),
-                            transitionDuration: Duration.zero,
-                            reverseTransitionDuration: Duration.zero,
+                              formkey.currentState!.validate();
+                              if (isFormValid == false) {
+                                print("Form is not valid!");
+                                isFormValid = true;
+                                return;
+                              }
+                              var res = await DBProvider.db
+                                  .checkUser(email, password);
+                              if (res == null ||
+                                  (email == "" && password == "")) {
+                                print("Could not log in!");
+                              } else {
+                                print("Logged in!");
+                                setState(() {
+                                  email = "";
+                                  password = "";
+                                });
+                                User user = User(
+                                  email: res['email'] as String,
+                                  password: res['password'] as String,
+                                  phoneno: res['phoneno'] as String,
+                                  role: res['role'] as String,
+                                  username: res['username'] as String,
+                                );
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    pageBuilder:
+                                        (context, animation1, animation2) =>
+                                            MainUserPageWidget(user: user),
+                                    transitionDuration: Duration.zero,
+                                    reverseTransitionDuration: Duration.zero,
+                                  ),
+                                );
+                              }
+                            },
                           ),
-                        );
-                      },
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.all(30.0),
+                      child: ElevatedButton(
+                        child: const Text('Register'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 100, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                              pageBuilder: (context, animation1, animation2) =>
+                                  const RegisterPageWidget(),
+                              transitionDuration: Duration.zero,
+                              reverseTransitionDuration: Duration.zero,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
