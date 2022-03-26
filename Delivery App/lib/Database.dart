@@ -2,6 +2,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:delivery_app/models/user.dart';
 
+import 'models/produs.dart';
+
 class DBProvider {
   DBProvider._();
   static final DBProvider db = DBProvider._();
@@ -19,6 +21,13 @@ class DBProvider {
               username TEXT NOT NULL,
               phoneno TEXT NOT NULL,
               role TEXT NOT NULL
+            );
+
+            CREATE TABLE produs (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              NUME TEXT NOT NULL,
+              DESCRIERE TEXT,
+              PRET REAL NOT NULL,
             )
           ''');
     }, version: 1);
@@ -47,6 +56,24 @@ class DBProvider {
 
     return true;
   }
+
+
+  newUProdus(Produs newProdus) async {
+    final db = await database;
+
+    var res;
+   res = await db.rawInsert('''
+      INSERT INTO produs(
+          nume, descriere, pret
+        ) VALUES (?, ?, ?)
+      ''', [
+        newProdus.nume,
+        newProdus.descriere,
+        newProdus.pret,
+      ]);
+    return true;
+  }
+
 
   Future<Map<String, Object?>?> checkUser(email, password) async {
     final db = await database;
