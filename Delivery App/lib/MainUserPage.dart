@@ -71,6 +71,7 @@ class MainUserPageState extends State<MainUserPage> {
             ),
           ]),
         ),
+        
         bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
