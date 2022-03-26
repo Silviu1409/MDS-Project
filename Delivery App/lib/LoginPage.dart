@@ -112,6 +112,7 @@ class LoginPageState extends State<LoginPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -142,6 +143,7 @@ class LoginPageState extends State<LoginPage> {
                               },
                               decoration: InputDecoration(
                                 enabledBorder: const OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -226,6 +228,7 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
+                          DBProvider.db.getUsers();
                           Navigator.push(
                             context,
                             PageRouteBuilder(

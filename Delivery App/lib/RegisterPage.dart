@@ -130,6 +130,7 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -161,6 +162,7 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -191,6 +193,7 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -227,6 +230,7 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
