@@ -24,59 +24,45 @@ class DBProvider {
               username TEXT NOT NULL,
               phoneno TEXT NOT NULL,
               role TEXT NOT NULL
-            );
-
+            );''');
+      await db.execute('''
+            CREATE TABLE restaurant (
+              id_restaurant INTEGER PRIMARY KEY AUTOINCREMENT,
+              nume TEXT NOT NULL,
+              adresa TEXT NOT NULL
+            );''');
+      await db.execute('''
             CREATE TABLE produs (
               id_produs INTEGER PRIMARY KEY AUTOINCREMENT,
-              NUME TEXT NOT NULL,
-              DESCRIERE TEXT,
-              PRET REAL NOT NULL,
-            );
-
-            CREATE TABLE shoppingcart (
-              id_shopping INTEGER PRIMARY KEY AUTOINCREMENT,
-              email TEXT NOT NULL,
-              List<orderitems>, 
-              FOREIGN KEY (email)
-              REFERENCES user (email) 
+              nume TEXT NOT NULL,
+              descriere TEXT,
+              pret REAL NOT NULL,
+              id_restaurant INTEGER NOT NULL,
+              FOREIGN KEY (id_restaurant) REFERENCES restaurant (id_restaurant)
                 ON UPDATE SET NULL
                 ON DELETE SET NULL
-              FOREIGN KEY (orderitems)
-              REFERENCES orderitem (id_order) 
-              ON UPDATE SET NULL
-              ON DELETE SET NULL
-            );
-
+            );''');
+      await db.execute('''
+            CREATE TABLE shoppingcart (
+              id_shopping INTEGER PRIMARY KEY AUTOINCREMENT,
+              id_user TEXT NOT NULL,
+              FOREIGN KEY (id_user) REFERENCES users (email)
+                ON UPDATE SET NULL
+                ON DELETE SET NULL
+            );''');
+      await db.execute('''
            CREATE TABLE orderitem (
               id_order INTEGER PRIMARY KEY AUTOINCREMENT,
               id_produs INTEGER NOT NULL,
               id_shopping INTEGER NOT NULL,
-              cantitate INTEGER DEFAULT 1, 
-              FOREIGN KEY (id_produs)
-              REFERENCES produs (id_produs) 
+              cantitate INTEGER DEFAULT 1,
+              FOREIGN KEY (id_produs) REFERENCES produs (id_produs)
                 ON UPDATE SET NULL
                 ON DELETE SET NULL,
-              FOREIGN KEY (id_shopping)
-              REFERENCES shoppingcart (id_shopping) 
+              FOREIGN KEY (id_shopping) REFERENCES shoppingcart (id_shopping)
                 ON UPDATE SET NULL
                 ON DELETE SET NULL
-            );
-
-            CREATE TABLE restaurant (
-              id_restaurant INTEGER PRIMARY KEY AUTOINCREMENT,
-              nume TEXT NOT NULL,
-              adresa TEXT NOT NULL,
-              List<produs>, 
-              FOREIGN KEY (produs)
-              REFERENCES produs (id_produs) 
-                ON UPDATE SET NULL
-                ON DELETE SET NULL
-              
-            );
-
-
-
-          ''');
+            );''');
     }, version: 1);
   }
 
@@ -104,20 +90,25 @@ class DBProvider {
     return true;
   }
 
-
   newProdus(Produs newProdus) async {
     final db = await database;
 
     var res;
-   res = await db.rawInsert('''
-      INSERT INTO produs(
-          nume, descriere, pret
-        ) VALUES (?, ?, ?)
-      ''', [
+    try {
+      res = await db.rawInsert('''
+        INSERT INTO produs(
+            nume, descriere, pret, id_restaurant
+          ) VALUES (?, ?, ?, ?)
+        ''', [
         newProdus.nume,
         newProdus.descriere,
         newProdus.pret,
+        newProdus.id_restaurant,
       ]);
+    } on Exception {
+      print("could not insert data into produs");
+      return false;
+    }
     return true;
   }
 
@@ -125,14 +116,18 @@ class DBProvider {
     final db = await database;
 
     var res;
-    res = await db.rawInsert('''
+    try {
+      res = await db.rawInsert('''
       INSERT INTO shoppingcart(
-          user, produse
-        ) VALUES (?, ?)
+          id_user
+        ) VALUES (?)
       ''', [
         newshoppingCart.user,
-        newshoppingCart.produse,
       ]);
+    } on Exception {
+      print("could not insert data into shoppingcart");
+      return false;
+    }
     return true;
   }
 
@@ -140,36 +135,43 @@ class DBProvider {
     final db = await database;
 
     var res;
-    res = await db.rawInsert('''
+    try {
+      res = await db.rawInsert('''
       INSERT INTO orderitem(
-          produs, shoppingCart, cantitate
+          id_produs, id_shopping, cantitate
         ) VALUES (?, ?, ?)
       ''', [
-        neworderItem.produs,
-        neworderItem.shoppingCart,
+        neworderItem.id_produs,
+        neworderItem.id_shopping,
         neworderItem.cantitate,
       ]);
+    } on Exception {
+      print("could not insert data into orderitem");
+      return false;
+    }
     return true;
   }
-  
-  
+
   newRestaurant(Restaurant newRestaurant) async {
     final db = await database;
 
     var res;
-    res = await db.rawInsert('''
+    try {
+      res = await db.rawInsert('''
       INSERT INTO restaurant(
-          nume, adresa, produse_restaurant
-        ) VALUES (?, ?, ?)
+          nume, adresa
+        ) VALUES (?, ?)
       ''', [
         newRestaurant.nume,
         newRestaurant.adresa,
-        newRestaurant.produse_restaurant,
       ]);
+    } on Exception {
+      print("could not insert data into restaurant");
+      return false;
+    }
     return true;
   }
 
-  
   Future<Map<String, Object?>?> checkUser(email, password) async {
     final db = await database;
     var res = await db.rawQuery(
