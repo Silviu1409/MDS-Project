@@ -24,11 +24,55 @@ class DBProvider {
             );
 
             CREATE TABLE produs (
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id_produs INTEGER PRIMARY KEY AUTOINCREMENT,
               NUME TEXT NOT NULL,
               DESCRIERE TEXT,
               PRET REAL NOT NULL,
-            )
+            );
+
+            CREATE TABLE shoppingcart (
+              id_shopping INTEGER PRIMARY KEY AUTOINCREMENT,
+              email TEXT NOT NULL,
+              List<orderitems>, 
+              FOREIGN KEY (email)
+              REFERENCES user (email) 
+                ON UPDATE SET NULL
+                ON DELETE SET NULL
+              FOREIGN KEY (orderitems)
+              REFERENCES orderitem (id_order) 
+              ON UPDATE SET NULL
+              ON DELETE SET NULL
+            );
+
+           CREATE TABLE orderitem (
+              id_order INTEGER PRIMARY KEY AUTOINCREMENT,
+              id_produs INTEGER NOT NULL,
+              id_shopping INTEGER NOT NULL,
+              cantitate INTEGER DEFAULT 1, 
+              FOREIGN KEY (id_produs)
+              REFERENCES produs (id_produs) 
+                ON UPDATE SET NULL
+                ON DELETE SET NULL,
+              FOREIGN KEY (id_shopping)
+              REFERENCES shoppingcart (id_shopping) 
+                ON UPDATE SET NULL
+                ON DELETE SET NULL
+            );
+
+            CREATE TABLE restaurant (
+              id_restaurant INTEGER PRIMARY KEY AUTOINCREMENT,
+              nume TEXT NOT NULL,
+              adresa TEXT NOT NULL,
+              List<produs>, 
+              FOREIGN KEY (produs)
+              REFERENCES produs (id_produs) 
+                ON UPDATE SET NULL
+                ON DELETE SET NULL
+              
+            );
+
+
+
           ''');
     }, version: 1);
   }
@@ -58,7 +102,7 @@ class DBProvider {
   }
 
 
-  newUProdus(Produs newProdus) async {
+  newProdus(Produs newProdus) async {
     final db = await database;
 
     var res;
@@ -73,6 +117,21 @@ class DBProvider {
       ]);
     return true;
   }
+
+ /* newShoppingCart(ShoppingCart newshoppingCart) async {
+    final db = await database;
+
+    var res;
+   res = await db.rawInsert('''
+      INSERT INTO produs(
+          email, orderitems
+        ) VALUES (?, ?)
+      ''', [
+        newProdus.user,
+        newProdus.List<OrderItems>,
+      ]);
+    return true;
+  }*/
 
 
   Future<Map<String, Object?>?> checkUser(email, password) async {
