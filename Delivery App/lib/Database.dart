@@ -1,3 +1,6 @@
+import 'package:delivery_app/models/orderitem.dart';
+import 'package:delivery_app/models/restaurant.dart';
+import 'package:delivery_app/models/shoppingcart.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:delivery_app/models/user.dart';
@@ -118,22 +121,55 @@ class DBProvider {
     return true;
   }
 
- /* newShoppingCart(ShoppingCart newshoppingCart) async {
+  newshoppingCart(ShoppingCart newshoppingCart) async {
     final db = await database;
 
     var res;
-   res = await db.rawInsert('''
-      INSERT INTO produs(
-          email, orderitems
+    res = await db.rawInsert('''
+      INSERT INTO shoppingcart(
+          user, produse
         ) VALUES (?, ?)
       ''', [
-        newProdus.user,
-        newProdus.List<OrderItems>,
+        newshoppingCart.user,
+        newshoppingCart.produse,
       ]);
     return true;
-  }*/
+  }
 
+  neworderItem(OrderItem neworderItem) async {
+    final db = await database;
 
+    var res;
+    res = await db.rawInsert('''
+      INSERT INTO orderitem(
+          produs, shoppingCart, cantitate
+        ) VALUES (?, ?, ?)
+      ''', [
+        neworderItem.produs,
+        neworderItem.shoppingCart,
+        neworderItem.cantitate,
+      ]);
+    return true;
+  }
+  
+  
+  newRestaurant(Restaurant newRestaurant) async {
+    final db = await database;
+
+    var res;
+    res = await db.rawInsert('''
+      INSERT INTO restaurant(
+          nume, adresa, produse_restaurant
+        ) VALUES (?, ?, ?)
+      ''', [
+        newRestaurant.nume,
+        newRestaurant.adresa,
+        newRestaurant.produse_restaurant,
+      ]);
+    return true;
+  }
+
+  
   Future<Map<String, Object?>?> checkUser(email, password) async {
     final db = await database;
     var res = await db.rawQuery(
