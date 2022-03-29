@@ -38,6 +38,7 @@ dependencies:
   path: ^1.8.0
   intro_slider: ^3.0.3
   flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^2.1.1
 
 flutter_icons:
   android: true
@@ -57,6 +58,11 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_native_splash:
+  background_image: images/splash_screen.png
+  android_12: 
+    color: "#ffffff"
 
 # The following section is specific to Flutter.
 flutter:
