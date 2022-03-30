@@ -1,8 +1,8 @@
-import 'package:delivery_app/Database.dart';
 import 'package:delivery_app/LoginPage.dart';
 import 'package:delivery_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'repository/data_repository.dart';
 
 class RegisterPageWidget extends StatelessWidget {
   const RegisterPageWidget({Key? key}) : super(key: key);
@@ -33,7 +33,9 @@ class RegisterPageState extends State<RegisterPage> {
   var password = "";
   var username = "";
   var phoneno = "";
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final DataRepository repository = DataRepository();
 
   bool isFormValid = true;
   final email_regex = RegExp(
@@ -130,7 +132,8 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -162,7 +165,8 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -193,7 +197,8 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -230,7 +235,8 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -259,30 +265,26 @@ class RegisterPageState extends State<RegisterPage> {
                                 isFormValid = true;
                                 return;
                               }
-                              var newDBUser = User(
+                              final newUser = User(
                                   email: email,
                                   password: password,
                                   username: username,
                                   phoneno: phoneno,
                                   role: "user");
-                              bool res = await DBProvider.db.newUser(newDBUser);
-                              if (res == true) {
-                                formkey.currentState?.reset();
-                                print("Registered successfully!");
-                                setState(() {});
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation1, animation2) =>
-                                            const LoginPageWidget(),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
-                              } else {
-                                print("Could not register!");
-                              }
+                              repository.addUsers(newUser);
+                              formkey.currentState?.reset();
+                              print("Registered successfully!");
+                              setState(() {});
+                              Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder:
+                                      (context, animation1, animation2) =>
+                                          const LoginPageWidget(),
+                                  transitionDuration: Duration.zero,
+                                  reverseTransitionDuration: Duration.zero,
+                                ),
+                              );
                             },
                           ),
                         ],

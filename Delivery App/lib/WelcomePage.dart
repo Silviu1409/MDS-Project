@@ -73,10 +73,6 @@ class WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  void onNextPress() {
-    print("onNextPress caught");
-  }
-
   Widget renderNextBtn() {
     return const Icon(
       Icons.navigate_next,
@@ -113,33 +109,19 @@ class WelcomePageState extends State<WelcomePage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: IntroSlider(
-        // List slides
         slides: slides,
-
-        // Skip button
         renderSkipBtn: renderSkipBtn(),
         skipButtonStyle: myButtonStyle(),
-
-        // Next button
         renderNextBtn: renderNextBtn(),
-        onNextPress: onNextPress,
         nextButtonStyle: myButtonStyle(),
-
-        // Done button
         renderDoneBtn: renderDoneBtn(),
         onDonePress: onDonePress,
         doneButtonStyle: myButtonStyle(),
-
-        // Dot indicator
         colorDot: const Color(0x33FFA8B0),
         colorActiveDot: const Color(0xffFFA8B0),
         sizeDot: 13.0,
-
-        // Show or hide status bar
         hideStatusBar: true,
         backgroundColorAllSlides: Colors.transparent,
-
-        // Scrollbar
         verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
       ),
     );

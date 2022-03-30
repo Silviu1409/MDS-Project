@@ -86,13 +86,6 @@ class MainUserPageState extends State<MainUserPage> {
                 }),
           ]),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     _addUser();
-        //   },
-        //   tooltip: 'Add User',
-        //   child: const Icon(Icons.add),
-        // ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -126,11 +119,6 @@ class MainUserPageState extends State<MainUserPage> {
         ),
       ),
     );
-  }
-
-  //Initial version
-  void _addUser() {
-    print("da");
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {

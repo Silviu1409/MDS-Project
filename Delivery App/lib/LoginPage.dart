@@ -1,11 +1,8 @@
-import 'dart:io';
-
-import 'package:delivery_app/Database.dart';
 import 'package:delivery_app/MainUserPage.dart';
 import 'package:delivery_app/RegisterPage.dart';
 import 'package:flutter/material.dart';
-
 import 'models/user.dart';
+import 'repository/data_repository.dart';
 
 class LoginPageWidget extends StatelessWidget {
   const LoginPageWidget({Key? key}) : super(key: key);
@@ -35,8 +32,10 @@ class LoginPageState extends State<LoginPage> {
   var email = "";
   var password = "";
   bool isPasswdHidden = true;
-  GlobalKey<FormState> formkey = GlobalKey<FormState>();
   bool isFormValid = true;
+
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final DataRepository repository = DataRepository();
 
   final email_regex = RegExp(
       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
@@ -112,7 +111,8 @@ class LoginPageState extends State<LoginPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -143,7 +143,8 @@ class LoginPageState extends State<LoginPage> {
                               },
                               decoration: InputDecoration(
                                 enabledBorder: const OutlineInputBorder(
-                                  borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
@@ -182,9 +183,11 @@ class LoginPageState extends State<LoginPage> {
                                 isFormValid = true;
                                 return;
                               }
-                              var res = await DBProvider.db
-                                  .checkUser(email, password);
-                              if (res == null ||
+                              var res =
+                                  await repository.searchUser(email, password);
+                              final data =
+                                  res.docs.map((doc) => doc.data()).toList();
+                              if (data.isEmpty ||
                                   (email == "" && password == "")) {
                                 print("Could not log in!");
                               } else {
@@ -193,6 +196,7 @@ class LoginPageState extends State<LoginPage> {
                                   email = "";
                                   password = "";
                                 });
+                                var res = data[0] as Map<String, dynamic>;
                                 User user = User(
                                   email: res['email'] as String,
                                   password: res['password'] as String,
@@ -228,7 +232,6 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
-                          DBProvider.db.getUsers();
                           Navigator.push(
                             context,
                             PageRouteBuilder(
