@@ -5,7 +5,7 @@ class UserCard extends StatelessWidget {
   final User user;
   final TextStyle boldStyle;
 
-  UserCard({Key? key, required this.user, required this.boldStyle})
+  const UserCard({Key? key, required this.user, required this.boldStyle})
       : super(key: key);
 
   @override
