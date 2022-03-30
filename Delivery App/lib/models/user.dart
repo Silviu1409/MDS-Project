@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User user) => json.encode(user.toJson);
@@ -10,6 +12,7 @@ class User {
   String username;
   String phoneno;
   String role;
+  String? ref_id;
 
   User({
     required this.email,
@@ -18,6 +21,12 @@ class User {
     required this.phoneno,
     required this.role,
   });
+
+  factory User.fromSnapshot(DocumentSnapshot snapshot) {
+    final newUser = User.fromJson(snapshot.data() as Map<String, dynamic>);
+    newUser.ref_id = snapshot.reference.id;
+    return newUser;
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         email: json["email"],
