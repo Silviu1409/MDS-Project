@@ -17,7 +17,7 @@ In order to create the backlog for our application we used Trello.[The link for 
 
 # User stories
 
-### User stories describe what a normal user should be able to do withing our application:
+### User stories describe what a normal user should be able to do within our application:
 
 1. As a user, I want to have a shopping cart.
 2. As a user, I want to be able to see the restaurants items after clicking on the restaurant's thumbnail photo.
