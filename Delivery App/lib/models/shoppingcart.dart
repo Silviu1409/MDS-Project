@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery_app/models/user.dart';
 
 ShoppingCart userFromJson(String str) =>
@@ -8,21 +9,26 @@ ShoppingCart userFromJson(String str) =>
 String userToJson(ShoppingCart user) => json.encode(user.toJson);
 
 class ShoppingCart {
-  Int64 id_shopping;
-  User user;
+  String finished;
+  String? datetime;
+  DocumentReference user;
+  String? ref_id;
 
   ShoppingCart({
-    required this.id_shopping,
     required this.user,
+    required this.finished,
+    this.datetime,
   });
 
   factory ShoppingCart.fromJson(Map<String, dynamic> json) => ShoppingCart(
-        id_shopping: json["id"],
-        user: json["email"],
+        user: json["user"],
+        finished: json["finished"],
+        datetime: json["datetime"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id_shopping,
-        "email": user,
+        "user": user,
+        "finished": finished,
+        "datetime": datetime,
       };
 }

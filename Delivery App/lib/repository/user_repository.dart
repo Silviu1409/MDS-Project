@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
 
-class DataRepository {
+class UserRepository {
   final CollectionReference collection =
       FirebaseFirestore.instance.collection('users');
 
@@ -19,6 +19,16 @@ class DataRepository {
         .where("password", isEqualTo: password)
         .get();
   }
+
+  //pt. profil user
+  Future<DocumentSnapshot<Object?>> getUser(String userref) {
+    return collection.doc(userref).get();
+  }
+
+  // getallUsers() async {
+  //   var res = await collection.get();
+  //   print(res.docs.map((e) => e.reference));
+  // }
 
   // void updatePet(User user) async {
   //   await collection.doc(user.ref_id).update(user.toJson());

@@ -1,33 +1,31 @@
 import 'dart:convert';
 import 'dart:ffi';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 OrderItem userFromJson(String str) => OrderItem.fromJson(json.decode(str));
 
 String userToJson(OrderItem user) => json.encode(user.toJson);
 
 class OrderItem {
-  Int64 id_order;
-  Int64 id_produs;
-  Int64 id_shopping;
+  DocumentReference produs;
+  DocumentReference shoppingcart;
   Int64 cantitate;
+  String? ref_id;
 
   OrderItem({
-    required this.id_order,
-    required this.id_produs,
-    required this.id_shopping,
+    required this.produs,
+    required this.shoppingcart,
     required this.cantitate,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-      id_order: json["id"],
-      id_produs: json["id_produs"],
-      id_shopping: json["id_shopping"],
+      produs: json["produs"],
+      shoppingcart: json["shoppingcart"],
       cantitate: json["cantitate"]);
 
   Map<String, dynamic> toJson() => {
-        "id": id_order,
-        "id_produs": id_shopping,
-        "id_shopping": id_shopping,
+        "produs": produs,
+        "shopping": shoppingcart,
         "cantitate": cantitate,
       };
 }

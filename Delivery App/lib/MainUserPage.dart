@@ -1,9 +1,15 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/repository/orderitem_repository.dart';
+import 'package:delivery_app/repository/produs_repository.dart';
+import 'package:delivery_app/repository/restaurant_repository.dart';
+import 'package:delivery_app/repository/shopping_repository.dart';
 import 'package:flutter/material.dart';
 import 'LoginPage.dart';
 import 'models/user.dart';
 import 'user_card.dart';
-import 'repository/data_repository.dart';
+import 'repository/user_repository.dart';
 
 class MainUserPageWidget extends StatelessWidget {
   const MainUserPageWidget({Key? key, required this.user}) : super(key: key);
@@ -35,7 +41,13 @@ class MainUserPage extends StatefulWidget {
 
 class MainUserPageState extends State<MainUserPage> {
   int _selectedIndex = 0;
-  final DataRepository repository = DataRepository();
+
+  final UserRepository repository_user = UserRepository();
+  final ShoppingRepository repository_cart = ShoppingRepository();
+  final OrderItemRepository repository_orderitem = OrderItemRepository();
+  final RestaurantRepository repository_restaurant = RestaurantRepository();
+  final ProdusRepository repository_produs = ProdusRepository();
+
   final boldStyle =
       const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
 
@@ -57,12 +69,15 @@ class MainUserPageState extends State<MainUserPage> {
         body: Container(
           padding: const EdgeInsets.all(30.0),
           child: Column(children: <Widget>[
-            Text("Hello, ${widget.user.username}!",
-                style: const TextStyle(
-                    fontFamily: 'Lato-Black',
-                    fontSize: 32.0,
-                    color: Colors.red,
-                    fontWeight: FontWeight.w700)),
+            Center(
+              child: Text("Hello, ${widget.user.username}!",
+                  style: const TextStyle(
+                      fontFamily: 'Lato-Black',
+                      fontSize: 32.0,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w700)),
+            ),
+            const SizedBox(height: 25),
             ElevatedButton(
               child: const Text('Back to login'),
               onPressed: () {
@@ -77,14 +92,173 @@ class MainUserPageState extends State<MainUserPage> {
                 );
               },
             ),
-            StreamBuilder<QuerySnapshot>(
-                stream: repository.getStream(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const LinearProgressIndicator();
 
-                  return _buildList(context, snapshot.data?.docs ?? []);
-                }),
+            // Text(
+            //   widget.user.email,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            // Text(
+            //   widget.user.password,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            // Text(
+            //   widget.user.username,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            // Text(
+            //   widget.user.phoneno,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            // Text(
+            //   widget.user.role,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+            // Text(
+            //   widget.user.ref_id as String,
+            //   style: const TextStyle(
+            //       fontFamily: 'Lato-Black',
+            //       fontSize: 20.0,
+            //       color: Colors.red,
+            //       fontWeight: FontWeight.w700),
+            // ),
+
+            // StreamBuilder<QuerySnapshot>(
+            //     stream: repository.getStream(),
+            //     builder: (context, snapshot) {
+            //       if (!snapshot.hasData) return const LinearProgressIndicator();
+
+            //       return _buildList(context, snapshot.data?.docs ?? []);
+            //     }),
           ]),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            FloatingActionButton(
+              onPressed: () async {
+                String cart_ref = await repository_cart
+                    .searchActiveShoppingcarts(widget.user.ref_id);
+                List<DocumentSnapshot<Object?>> produse =
+                    await repository_orderitem
+                        .getItemsforShoppingCart(cart_ref);
+                List<int> cant = await repository_orderitem.getCant(cart_ref);
+                double pret_total = 0;
+                Map<String, List<dynamic>> shoppingcartitems = {
+                  "nume": [],
+                  "pret": [],
+                  "cantitate": [],
+                };
+                int i = 0;
+                for (DocumentSnapshot doc in produse) {
+                  double pret = doc.get("pret");
+                  int c = cant[i];
+                  shoppingcartitems["nume"]?.add(doc.get("nume"));
+                  shoppingcartitems["pret"]?.add(pret);
+                  shoppingcartitems["cantitate"]?.add(c);
+                  pret_total += pret * c;
+                  i += 1;
+                }
+                print("Shopping cart:\n${shoppingcartitems}");
+                print("Pret total: ${pret_total}");
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.shopping_cart),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                QuerySnapshot history =
+                    await repository_cart.getOrderHistory(widget.user.ref_id);
+                if (history.size != 0) {
+                  for (QueryDocumentSnapshot comanda in history.docs) {
+                    print(comanda.data());
+                  }
+                } else {
+                  print("Nicio comanda data.");
+                }
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.list_alt),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                var restaurante = await repository_restaurant.getRestaurants();
+                if (restaurante.size == 0) {
+                  print("Niciun restaurant");
+                } else {
+                  for (QueryDocumentSnapshot restaurant in restaurante.docs) {
+                    print(restaurant.data());
+                  }
+                }
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.restaurant),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                var restaurante = await repository_restaurant.getRestaurants();
+                if (restaurante.size == 0) {
+                  print("Niciun restaurant");
+                } else {
+                  List<String> id_res = [];
+                  for (QueryDocumentSnapshot restaurant in restaurante.docs) {
+                    id_res.add(restaurant.id);
+                  }
+                  for (var res in id_res) {
+                    var produse =
+                        await repository_produs.getProductsforRestaurant(res);
+                    if (produse.size == 0) {
+                      print("Niciun produs");
+                    } else {
+                      for (QueryDocumentSnapshot produs in produse.docs) {
+                        print(produs.data());
+                      }
+                    }
+                  }
+                }
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.restaurant_menu),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () async {
+                print(widget.user.toJson());
+              },
+              backgroundColor: Colors.red,
+              child: const Icon(Icons.account_circle),
+            ),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
