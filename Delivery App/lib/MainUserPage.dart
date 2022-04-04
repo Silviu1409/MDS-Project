@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery_app/repository/orderitem_repository.dart';
 import 'package:delivery_app/repository/produs_repository.dart';
@@ -158,28 +156,32 @@ class MainUserPageState extends State<MainUserPage> {
               onPressed: () async {
                 String cart_ref = await repository_cart
                     .searchActiveShoppingcarts(widget.user.ref_id);
-                List<DocumentSnapshot<Object?>> produse =
-                    await repository_orderitem
-                        .getItemsforShoppingCart(cart_ref);
-                List<int> cant = await repository_orderitem.getCant(cart_ref);
-                double pret_total = 0;
-                Map<String, List<dynamic>> shoppingcartitems = {
-                  "nume": [],
-                  "pret": [],
-                  "cantitate": [],
-                };
-                int i = 0;
-                for (DocumentSnapshot doc in produse) {
-                  double pret = doc.get("pret");
-                  int c = cant[i];
-                  shoppingcartitems["nume"]?.add(doc.get("nume"));
-                  shoppingcartitems["pret"]?.add(pret);
-                  shoppingcartitems["cantitate"]?.add(c);
-                  pret_total += pret * c;
-                  i += 1;
+                if (cart_ref != "") {
+                  List<DocumentSnapshot<Object?>> produse =
+                      await repository_orderitem
+                          .getItemsforShoppingCart(cart_ref);
+                  List<int> cant = await repository_orderitem.getCant(cart_ref);
+                  double pret_total = 0;
+                  Map<String, List<dynamic>> shoppingcartitems = {
+                    "nume": [],
+                    "pret": [],
+                    "cantitate": [],
+                  };
+                  int i = 0;
+                  for (DocumentSnapshot doc in produse) {
+                    double pret = doc.get("pret");
+                    int c = cant[i];
+                    shoppingcartitems["nume"]?.add(doc.get("nume"));
+                    shoppingcartitems["pret"]?.add(pret);
+                    shoppingcartitems["cantitate"]?.add(c);
+                    pret_total += pret * c;
+                    i += 1;
+                  }
+                  print("Shopping cart:\n$shoppingcartitems");
+                  print("Pret total: $pret_total");
+                } else {
+                  print("Niciun shopping cart activ.");
                 }
-                print("Shopping cart:\n${shoppingcartitems}");
-                print("Pret total: ${pret_total}");
               },
               backgroundColor: Colors.red,
               child: const Icon(Icons.shopping_cart),

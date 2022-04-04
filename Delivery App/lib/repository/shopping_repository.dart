@@ -38,9 +38,9 @@ class ShoppingRepository {
         .limit(1);
     var snapshots = await query.get();
     String doc_id = "";
-    snapshots.docs.forEach((doc) {
+    for (var doc in snapshots.docs) {
       doc_id = doc.id;
-    });
+    }
     return doc_id;
   }
 

@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 Produs userFromJson(String str) => Produs.fromJson(json.decode(str));
@@ -10,7 +8,7 @@ String userToJson(Produs user) => json.encode(user.toJson);
 class Produs {
   String nume;
   String? descriere;
-  Float pret;
+  double pret;
   DocumentReference restaurant;
   String? ref_id;
 
