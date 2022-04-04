@@ -2,7 +2,7 @@ import 'package:delivery_app/MainUserPage.dart';
 import 'package:delivery_app/RegisterPage.dart';
 import 'package:flutter/material.dart';
 import 'models/user.dart';
-import 'repository/data_repository.dart';
+import 'repository/user_repository.dart';
 
 class LoginPageWidget extends StatelessWidget {
   const LoginPageWidget({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class LoginPageState extends State<LoginPage> {
   bool isFormValid = true;
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  final DataRepository repository = DataRepository();
+  final UserRepository repository = UserRepository();
 
   final email_regex = RegExp(
       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
@@ -196,14 +196,20 @@ class LoginPageState extends State<LoginPage> {
                                   email = "";
                                   password = "";
                                 });
-                                var res = data[0] as Map<String, dynamic>;
+                                var ref = res.docs
+                                    .map((doc) => doc.reference.id)
+                                    .toList()
+                                    .first;
+                                print(ref);
+                                var date = data[0] as Map<String, dynamic>;
                                 User user = User(
-                                  email: res['email'] as String,
-                                  password: res['password'] as String,
-                                  phoneno: res['phoneno'] as String,
-                                  role: res['role'] as String,
-                                  username: res['username'] as String,
+                                  email: date['email'] as String,
+                                  password: date['password'] as String,
+                                  phoneno: date['phoneno'] as String,
+                                  role: date['role'] as String,
+                                  username: date['username'] as String,
                                 );
+                                user.ref_id = ref;
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(

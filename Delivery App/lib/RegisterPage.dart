@@ -2,7 +2,7 @@ import 'package:delivery_app/LoginPage.dart';
 import 'package:delivery_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'repository/data_repository.dart';
+import 'repository/user_repository.dart';
 
 class RegisterPageWidget extends StatelessWidget {
   const RegisterPageWidget({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class RegisterPageState extends State<RegisterPage> {
   var phoneno = "";
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  final DataRepository repository = DataRepository();
+  final UserRepository repository = UserRepository();
 
   bool isFormValid = true;
   final email_regex = RegExp(
