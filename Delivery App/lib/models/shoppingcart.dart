@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delivery_app/models/user.dart';
 
 ShoppingCart userFromJson(String str) =>
     ShoppingCart.fromJson(json.decode(str));

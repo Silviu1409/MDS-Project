@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 Restaurant userFromJson(String str) => Restaurant.fromJson(json.decode(str));
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 OrderItem userFromJson(String str) => OrderItem.fromJson(json.decode(str));
@@ -9,7 +8,7 @@ String userToJson(OrderItem user) => json.encode(user.toJson);
 class OrderItem {
   DocumentReference produs;
   DocumentReference shoppingcart;
-  Int64 cantitate;
+  int cantitate;
   String? ref_id;
 
   OrderItem({
