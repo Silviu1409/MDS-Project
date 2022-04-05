@@ -3,13 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 OrderItem userFromJson(String str) => OrderItem.fromJson(json.decode(str));
 
-String userToJson(OrderItem user) => json.encode(user.toJson);
+String userToJson(OrderItem orderitem) => json.encode(orderitem.toJson);
 
 class OrderItem {
   DocumentReference produs;
   DocumentReference shoppingcart;
   int cantitate;
-  String? ref_id;
+  DocumentReference? ref;
 
   OrderItem({
     required this.produs,
@@ -18,13 +18,13 @@ class OrderItem {
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-      produs: json["produs"],
+      produs: json["product"],
       shoppingcart: json["shoppingcart"],
-      cantitate: json["cantitate"]);
+      cantitate: json["quantity"]);
 
   Map<String, dynamic> toJson() => {
-        "produs": produs,
+        "product": produs,
         "shopping": shoppingcart,
-        "cantitate": cantitate,
+        "quantity": cantitate,
       };
 }

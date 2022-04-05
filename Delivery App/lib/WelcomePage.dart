@@ -2,7 +2,6 @@ import 'package:intro_slider/intro_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intro_slider/slide_object.dart';
 import 'package:intro_slider/scrollbar_behavior_enum.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'LoginPage.dart';
 
 class WelcomePageWidget extends StatelessWidget {
@@ -69,12 +68,6 @@ class WelcomePageState extends State<WelcomePage> {
     slides.add(
       Slide(
         backgroundImage: ("images/pizza.png"),
-        description: "Mâncare delicioasă",
-        styleDescription: GoogleFonts.lato(
-          color: const Color(0xffF3B4BA),
-          fontSize: 30,
-        ),
-        marginDescription: const EdgeInsets.only(top: 250),
         backgroundImageFit: BoxFit.fill,
         backgroundOpacity: 0,
       ),
@@ -82,12 +75,6 @@ class WelcomePageState extends State<WelcomePage> {
     slides.add(
       Slide(
         backgroundImage: ("images/review.png"),
-        description: "Restaurante de calitate",
-        styleDescription: GoogleFonts.lato(
-          color: const Color(0xffF3B4BA),
-          fontSize: 30,
-        ),
-        marginDescription: const EdgeInsets.only(top: 250),
         backgroundImageFit: BoxFit.fill,
         backgroundOpacity: 0,
       ),
@@ -95,12 +82,6 @@ class WelcomePageState extends State<WelcomePage> {
     slides.add(
       Slide(
         backgroundImage: ("images/scuter.png"),
-        description: "Livrare rapidă",
-        styleDescription: GoogleFonts.lato(
-          color: const Color(0xffF3B4BA),
-          fontSize: 30,
-        ),
-        marginDescription: const EdgeInsets.only(top: 250),
         backgroundImageFit: BoxFit.fill,
         backgroundOpacity: 0,
       ),

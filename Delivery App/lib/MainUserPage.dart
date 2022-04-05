@@ -1,13 +1,16 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:delivery_app/repository/orderitem_repository.dart';
-import 'package:delivery_app/repository/produs_repository.dart';
-import 'package:delivery_app/repository/restaurant_repository.dart';
-import 'package:delivery_app/repository/shopping_repository.dart';
+import 'package:delivery_app/LoginPage.dart';
+import 'package:delivery_app/ShoppingCartPage.dart';
+import 'package:delivery_app/models/shoppingcart.dart';
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
+import 'AccountPage.dart';
+import 'HomePage.dart';
+import 'OrdersPage.dart';
 import 'models/user.dart';
-import 'user_card.dart';
-import 'repository/user_repository.dart';
+import 'repository/orderitem_repository.dart';
+import 'repository/shopping_repository.dart';
 
 class MainUserPageWidget extends StatelessWidget {
   const MainUserPageWidget({Key? key, required this.user}) : super(key: key);
@@ -39,15 +42,25 @@ class MainUserPage extends StatefulWidget {
 
 class MainUserPageState extends State<MainUserPage> {
   int _selectedIndex = 0;
+  List<Widget> pages = [];
+  int no_items = 0;
 
-  final UserRepository repository_user = UserRepository();
   final ShoppingRepository repository_cart = ShoppingRepository();
   final OrderItemRepository repository_orderitem = OrderItemRepository();
-  final RestaurantRepository repository_restaurant = RestaurantRepository();
-  final ProdusRepository repository_produs = ProdusRepository();
 
-  final boldStyle =
-      const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold);
+  List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
+
+  @override
+  void initState() {
+    super.initState();
+    pages = [
+      HomePageWidget(user: widget.user),
+      ShoppingCartPageWidget(user: widget.user),
+      OrdersPageWidget(user: widget.user),
+      AccountPageWidget(user: widget.user),
+    ];
+    getnoproductsshoppingcart();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -55,237 +68,122 @@ class MainUserPageState extends State<MainUserPage> {
     });
   }
 
+  void getnoproductsshoppingcart() async {
+    String cart_ref =
+        await repository_cart.searchActiveShoppingcarts(widget.user.ref);
+    if (cart_ref != "") {
+      List<DocumentSnapshot<Object?>> produse =
+          await repository_orderitem.getItemsforShoppingCart(cart_ref);
+      int i = 0;
+      for (DocumentSnapshot doc in produse) {
+        i += 1;
+      }
+      no_items = i;
+      setState(() {});
+    } else {
+      final newShoppingcart = ShoppingCart(
+        user: widget.user.ref,
+        finished: false,
+        datetime: "",
+      );
+      repository_cart.addShoppingCarts(newShoppingcart);
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Container(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(children: <Widget>[
-            Center(
-              child: Text("Hello, ${widget.user.username}!",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 32.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700)),
-            ),
-            const SizedBox(height: 25),
-            ElevatedButton(
-              child: const Text('Back to login'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        const LoginPageWidget(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
-              },
-            ),
-
-            // Text(
-            //   widget.user.email,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // Text(
-            //   widget.user.password,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // Text(
-            //   widget.user.username,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // Text(
-            //   widget.user.phoneno,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // Text(
-            //   widget.user.role,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-            // Text(
-            //   widget.user.ref_id as String,
-            //   style: const TextStyle(
-            //       fontFamily: 'Lato-Black',
-            //       fontSize: 20.0,
-            //       color: Colors.red,
-            //       fontWeight: FontWeight.w700),
-            // ),
-
-            // StreamBuilder<QuerySnapshot>(
-            //     stream: repository.getStream(),
-            //     builder: (context, snapshot) {
-            //       if (!snapshot.hasData) return const LinearProgressIndicator();
-
-            //       return _buildList(context, snapshot.data?.docs ?? []);
-            //     }),
-          ]),
-        ),
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            FloatingActionButton(
-              onPressed: () async {
-                String cart_ref = await repository_cart
-                    .searchActiveShoppingcarts(widget.user.ref_id);
-                if (cart_ref != "") {
-                  List<DocumentSnapshot<Object?>> produse =
-                      await repository_orderitem
-                          .getItemsforShoppingCart(cart_ref);
-                  List<int> cant = await repository_orderitem.getCant(cart_ref);
-                  double pret_total = 0;
-                  Map<String, List<dynamic>> shoppingcartitems = {
-                    "nume": [],
-                    "pret": [],
-                    "cantitate": [],
-                  };
-                  int i = 0;
-                  for (DocumentSnapshot doc in produse) {
-                    double pret = doc.get("pret");
-                    int c = cant[i];
-                    shoppingcartitems["nume"]?.add(doc.get("nume"));
-                    shoppingcartitems["pret"]?.add(pret);
-                    shoppingcartitems["cantitate"]?.add(c);
-                    pret_total += pret * c;
-                    i += 1;
-                  }
-                  print("Shopping cart:\n$shoppingcartitems");
-                  print("Pret total: $pret_total");
-                } else {
-                  print("Niciun shopping cart activ.");
-                }
-              },
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.shopping_cart),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                QuerySnapshot history =
-                    await repository_cart.getOrderHistory(widget.user.ref_id);
-                if (history.size != 0) {
-                  for (QueryDocumentSnapshot comanda in history.docs) {
-                    print(comanda.data());
-                  }
-                } else {
-                  print("Nicio comanda data.");
-                }
-              },
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.list_alt),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                var restaurante = await repository_restaurant.getRestaurants();
-                if (restaurante.size == 0) {
-                  print("Niciun restaurant");
-                } else {
-                  for (QueryDocumentSnapshot restaurant in restaurante.docs) {
-                    print(restaurant.data());
-                  }
-                }
-              },
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.restaurant),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                var restaurante = await repository_restaurant.getRestaurants();
-                if (restaurante.size == 0) {
-                  print("Niciun restaurant");
-                } else {
-                  List<String> id_res = [];
-                  for (QueryDocumentSnapshot restaurant in restaurante.docs) {
-                    id_res.add(restaurant.id);
-                  }
-                  for (var res in id_res) {
-                    var produse =
-                        await repository_produs.getProductsforRestaurant(res);
-                    if (produse.size == 0) {
-                      print("Niciun produs");
-                    } else {
-                      for (QueryDocumentSnapshot produs in produse.docs) {
-                        print(produs.data());
-                      }
-                    }
-                  }
-                }
-              },
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.restaurant_menu),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            FloatingActionButton(
-              onPressed: () async {
-                print(widget.user.toJson());
-              },
-              backgroundColor: Colors.red,
-              child: const Icon(Icons.account_circle),
-            ),
-          ],
-        ),
+        resizeToAvoidBottomInset: true,
+        body: pages[_selectedIndex],
+        floatingActionButton: (_selectedIndex == 3)
+            ? FloatingActionButton.extended(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (context, animation1, animation2) =>
+                          const LoginPageWidget(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  );
+                },
+                backgroundColor: Colors.red,
+                icon: const Icon(Icons.logout),
+                label: const Text("Logout"),
+              )
+            : (_selectedIndex == 1)
+                ? FloatingActionButton.extended(
+                    onPressed: () {},
+                    backgroundColor: Colors.red,
+                    icon: const Icon(Icons.shopping_cart_checkout),
+                    label: const Text("Comandă"),
+                  )
+                : null,
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Acasa',
+          items: <BottomNavigationBarItem>[
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                size: 30,
+              ),
+              label: 'Acasă',
               backgroundColor: Colors.red,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Descopera',
+              label: 'Coș',
               backgroundColor: Colors.red,
+              icon: Stack(
+                children: <Widget>[
+                  const Icon(
+                    Icons.shopping_cart,
+                    size: 30,
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          height: 19.0,
+                          width: 19.0,
+                          decoration: const BoxDecoration(
+                            color: Colors.red,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              (no_items < 10) ? "$no_items" : "9+",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Cos',
-              backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.list,
+                size: 30,
+              ),
               label: 'Comenzi',
               backgroundColor: Colors.red,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_rounded),
+            const BottomNavigationBarItem(
+              icon: Icon(
+                Icons.account_circle_rounded,
+                size: 30,
+              ),
               label: 'Cont',
               backgroundColor: Colors.red,
             ),
@@ -295,20 +193,5 @@ class MainUserPageState extends State<MainUserPage> {
         ),
       ),
     );
-  }
-
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-    return ListView(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(top: 20.0),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
-    final user = User.fromSnapshot(snapshot);
-
-    return UserCard(user: user, boldStyle: boldStyle);
   }
 }

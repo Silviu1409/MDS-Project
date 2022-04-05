@@ -6,8 +6,8 @@ class RestaurantRepository {
       FirebaseFirestore.instance.collection('restaurant');
 
   // pt. afisare toate restaurantele
-  Future<QuerySnapshot<Object?>> getRestaurants() {
-    return collection.get();
+  Stream<QuerySnapshot<Object?>> getRestaurants() {
+    return collection.snapshots();
   }
 
   Future<DocumentReference> addRestaurants(Restaurant restaurant) {

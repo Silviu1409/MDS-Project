@@ -14,11 +14,9 @@ class ProdusRepository {
   }
 
   // pt. afisare produse dintr-un restaurant
-  Future<QuerySnapshot<Object?>> getProductsforRestaurant(
-      String restaurantref) {
-    DocumentReference ref_restaurant =
-        FirebaseFirestore.instance.collection('restaurant').doc(restaurantref);
-    return collection.where("restaurant", isEqualTo: ref_restaurant).get();
+  Stream<QuerySnapshot<Object?>> getProductsforRestaurant(
+      DocumentReference? ref) {
+    return collection.where("restaurant", isEqualTo: ref).snapshots();
   }
 
   // void updatePet(User user) async {

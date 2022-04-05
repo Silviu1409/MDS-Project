@@ -83,6 +83,12 @@ flutter:
     - images/pizza.png
     - images/review.png
     - images/scuter.png
+    - images/thumbnail_burger_king.png
+    - images/thumbnail_chopstix.png
+    - images/thumbnail_dristor_kebap.png
+    - images/thumbnail_kfc.png
+    - images/thumbnail_mcdonalds.png
+    - images/thumbnail_trenta_pizza.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

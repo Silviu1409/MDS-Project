@@ -13,27 +13,23 @@ class ShoppingRepository {
     return collection.add(shoppingcart.toJson());
   }
 
-  Future<QuerySnapshot<Object?>> searchShoppingcarts(String userref) {
-    DocumentReference ref =
-        FirebaseFirestore.instance.collection('users').doc(userref);
-    return collection.where("user", isEqualTo: ref).get();
+  Future<QuerySnapshot<Object?>> searchShoppingcarts(
+      DocumentReference? userref) {
+    return collection.where("user", isEqualTo: userref).get();
   }
 
   // pt. istoric comenzi
-  Future<QuerySnapshot<Object?>> getOrderHistory(String? userref) {
-    DocumentReference ref =
-        FirebaseFirestore.instance.collection('users').doc(userref);
+  Stream<QuerySnapshot<Object?>> getOrderHistory(DocumentReference? userref) {
     return collection
-        .where("user", isEqualTo: ref)
+        .where("user", isEqualTo: userref)
         .where("finished", isEqualTo: true)
-        .get();
+        .limit(1)
+        .snapshots();
   }
 
-  Future<String> searchActiveShoppingcarts(String? userref) async {
-    DocumentReference ref =
-        FirebaseFirestore.instance.collection('users').doc(userref);
+  Future<String> searchActiveShoppingcarts(DocumentReference? userref) async {
     var query = collection
-        .where("user", isEqualTo: ref)
+        .where("user", isEqualTo: userref)
         .where("finished", isEqualTo: false)
         .limit(1);
     var snapshots = await query.get();
