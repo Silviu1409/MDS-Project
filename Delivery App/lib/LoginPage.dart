@@ -197,10 +197,9 @@ class LoginPageState extends State<LoginPage> {
                                   password = "";
                                 });
                                 var ref = res.docs
-                                    .map((doc) => doc.reference.id)
+                                    .map((doc) => doc.reference)
                                     .toList()
                                     .first;
-                                print(ref);
                                 var date = data[0] as Map<String, dynamic>;
                                 User user = User(
                                   email: date['email'] as String,
@@ -209,7 +208,7 @@ class LoginPageState extends State<LoginPage> {
                                   role: date['role'] as String,
                                   username: date['username'] as String,
                                 );
-                                user.ref_id = ref;
+                                user.ref = ref;
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(

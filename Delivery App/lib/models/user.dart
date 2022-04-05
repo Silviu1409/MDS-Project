@@ -11,7 +11,7 @@ class User {
   String username;
   String phoneno;
   String role;
-  String? ref_id;
+  DocumentReference? ref;
 
   User({
     required this.email,
@@ -23,7 +23,7 @@ class User {
 
   factory User.fromSnapshot(DocumentSnapshot snapshot) {
     final newUser = User.fromJson(snapshot.data() as Map<String, dynamic>);
-    newUser.ref_id = snapshot.reference.id;
+    newUser.ref = snapshot.reference;
     return newUser;
   }
 

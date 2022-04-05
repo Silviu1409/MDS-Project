@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 Produs userFromJson(String str) => Produs.fromJson(json.decode(str));
 
-String userToJson(Produs user) => json.encode(user.toJson);
+String userToJson(Produs produs) => json.encode(produs.toJson);
 
 class Produs {
   String nume;
   String? descriere;
-  double pret;
+  num pret;
   DocumentReference restaurant;
-  String? ref_id;
+  DocumentReference? ref;
 
   Produs({
     required this.nume,
@@ -19,16 +19,22 @@ class Produs {
     required this.restaurant,
   });
 
+  factory Produs.fromSnapshot(DocumentSnapshot snapshot) {
+    final newProdus = Produs.fromJson(snapshot.data() as Map<String, dynamic>);
+    newProdus.ref = snapshot.reference;
+    return newProdus;
+  }
+
   factory Produs.fromJson(Map<String, dynamic> json) => Produs(
-      nume: json["nume"],
-      descriere: json["descriere"],
-      pret: json["pret"],
+      nume: json["name"],
+      descriere: json["description"],
+      pret: json["price"],
       restaurant: json["restaurant"]);
 
   Map<String, dynamic> toJson() => {
-        "nume": nume,
-        "descriere": descriere,
-        "pret": pret,
+        "name": nume,
+        "description": descriere,
+        "price": pret,
         "restaurant": restaurant,
       };
 }

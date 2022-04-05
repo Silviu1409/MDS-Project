@@ -4,19 +4,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 ShoppingCart userFromJson(String str) =>
     ShoppingCart.fromJson(json.decode(str));
 
-String userToJson(ShoppingCart user) => json.encode(user.toJson);
+String userToJson(ShoppingCart shoppingcart) =>
+    json.encode(shoppingcart.toJson);
 
 class ShoppingCart {
-  String finished;
+  bool finished;
   String? datetime;
-  DocumentReference user;
-  String? ref_id;
+  DocumentReference? user;
+  DocumentReference? ref;
 
   ShoppingCart({
     required this.user,
     required this.finished,
     this.datetime,
   });
+
+  factory ShoppingCart.fromSnapshot(DocumentSnapshot snapshot) {
+    final newShoppingCart =
+        ShoppingCart.fromJson(snapshot.data() as Map<String, dynamic>);
+    newShoppingCart.ref = snapshot.reference;
+    return newShoppingCart;
+  }
 
   factory ShoppingCart.fromJson(Map<String, dynamic> json) => ShoppingCart(
         user: json["user"],

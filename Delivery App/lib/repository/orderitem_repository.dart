@@ -21,7 +21,7 @@ class OrderItemRepository {
     DocumentReference ref_produs =
         FirebaseFirestore.instance.collection('produs').doc(produsref);
     return collection
-        .where("produs", isEqualTo: ref_produs)
+        .where("product", isEqualTo: ref_produs)
         .where("shoppingcart", isEqualTo: ref_shopping)
         .get();
   }
