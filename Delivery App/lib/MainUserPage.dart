@@ -74,11 +74,7 @@ class MainUserPageState extends State<MainUserPage> {
     if (cart_ref != "") {
       List<DocumentSnapshot<Object?>> produse =
           await repository_orderitem.getItemsforShoppingCart(cart_ref);
-      int i = 0;
-      for (DocumentSnapshot doc in produse) {
-        i += 1;
-      }
-      no_items = i;
+      no_items = produse.length;
       setState(() {});
     } else {
       final newShoppingcart = ShoppingCart(

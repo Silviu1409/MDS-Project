@@ -137,6 +137,12 @@ class RegisterPageState extends State<RegisterPage> {
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
                                 hintText: 'Email',
                                 prefixIcon: Icon(Icons.mail_outline),
                               ),
@@ -170,6 +176,12 @@ class RegisterPageState extends State<RegisterPage> {
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
                                 hintText: 'Password',
                                 prefixIcon: Icon(Icons.password),
                               ),
@@ -197,6 +209,12 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(
@@ -235,6 +253,12 @@ class RegisterPageState extends State<RegisterPage> {
                               },
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(

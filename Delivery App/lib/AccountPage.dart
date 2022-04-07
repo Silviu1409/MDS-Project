@@ -26,6 +26,19 @@ class AccountPage extends StatefulWidget {
 }
 
 class AccountPageState extends State<AccountPage> {
+  Text customText(BuildContextcontext, String text) {
+    double heightval = MediaQuery.of(context).size.height * 0.01;
+
+    return Text(
+      text,
+      style: TextStyle(
+          fontFamily: 'Lato-Black',
+          fontSize: 2 * heightval,
+          color: Colors.red,
+          fontWeight: FontWeight.w700),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -43,38 +56,22 @@ class AccountPageState extends State<AccountPage> {
                   size: 100.0,
                   color: Colors.red,
                 ),
-                Text(
+                customText(
+                  context,
                   widget.user.username,
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 20.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 50),
-                Text(
+                customText(
+                  context,
                   "Email: ${widget.user.email}",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 20.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
-                Text(
+                customText(
+                  context,
                   "Parolă: ${widget.user.password}",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 20.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
-                Text(
+                customText(
+                  context,
                   "Număr de telefon: ${widget.user.phoneno}",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 20.0,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
               ],
             ),
