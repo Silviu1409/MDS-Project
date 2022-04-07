@@ -36,22 +36,33 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
   final ShoppingRepository repository_cart = ShoppingRepository();
   final OrderItemRepository repository_orderitem = OrderItemRepository();
 
+  List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
+
+  double total = 0;
   bool con = false;
   Timer? timer;
-  List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
-  double total = 0;
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+  bool old_con = true;
+  bool is_connected = true;
+  Timer? timer2;
 
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(
-        const Duration(seconds: 1), (Timer t) => AwaitConnection());
+      const Duration(seconds: 1),
+      (Timer t) => AwaitConnection(),
+    );
+    timer2 = Timer.periodic(
+      const Duration(seconds: 3),
+      (Timer t) => isConnected(),
+    );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    timer2?.cancel();
+    super.dispose();
   }
 
   AwaitConnection() async {
@@ -63,6 +74,16 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
     } else if (oldcon != con) {
       getproducts();
     }
+  }
+
+  isConnected() {
+    if (con == old_con && con == false) {
+      is_connected = false;
+      setState(() {});
+    } else {
+      is_connected = true;
+    }
+    old_con = con;
   }
 
   void getproducts() async {
@@ -136,25 +157,34 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                                     fontWeight: FontWeight.w700,
                                   ),
                                 )
-                          : Column(
-                              children: const <Widget>[
-                                CircularProgressIndicator(),
-                                SizedBox(height: 25),
-                                Text(
-                                  "Loading ...",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 255, 0, 0),
+                          : is_connected
+                              ? Center(
+                                  child: Column(
+                                    children: const <Widget>[
+                                      CircularProgressIndicator(),
+                                      SizedBox(height: 25),
+                                      Text(
+                                        "Se încarcă ... ",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 255, 0, 0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Center(
+                                  child: Column(
+                                    children: const <Widget>[
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Verifică conexiunea la internet",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 255, 0, 0),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Verifică conexiunea la internet",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 255, 0, 0),
-                                  ),
-                                ),
-                              ],
-                            ),
                     ),
                     Container(
                       child: (total == 0)

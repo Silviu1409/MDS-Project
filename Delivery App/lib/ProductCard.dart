@@ -34,6 +34,20 @@ class ProductCard extends StatefulWidget {
 }
 
 class ProductCardState extends State<ProductCard> {
+  Text customText(BuildContextcontext, String text) {
+    double heightval = MediaQuery.of(context).size.height * 0.01;
+
+    return Text(
+      text,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(
+          fontFamily: 'Lato-Black',
+          fontSize: 2 * heightval,
+          color: Colors.red,
+          fontWeight: FontWeight.w700),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,30 +63,17 @@ class ProductCardState extends State<ProductCard> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                Text(
+                customText(
+                  context,
                   "Nume: ${widget.produs.nume}",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 17.5,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
-                Text(
+                customText(
+                  context,
                   "Descriere: ${widget.produs.descriere}",
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 17.5,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
-                Text(
+                customText(
+                  context,
                   "Pret: ${widget.produs.pret}",
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 17.5,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
               ],
             ),

@@ -36,6 +36,19 @@ class RestaurantCard extends StatefulWidget {
 }
 
 class RestaurantCardState extends State<RestaurantCard> {
+  Text customText(BuildContextcontext, String text) {
+    double heightval = MediaQuery.of(context).size.height * 0.01;
+
+    return Text(
+      text,
+      style: TextStyle(
+          fontFamily: 'Lato-Black',
+          fontSize: 2 * heightval,
+          color: Colors.red,
+          fontWeight: FontWeight.w700),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,21 +90,13 @@ class RestaurantCardState extends State<RestaurantCard> {
             const SizedBox(width: 15),
             Column(
               children: <Widget>[
-                Text(
+                customText(
+                  context,
                   widget.restaurant.nume,
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 17.5,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
-                Text(
+                customText(
+                  context,
                   widget.restaurant.adresa,
-                  style: const TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: 17.5,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700),
                 ),
               ],
             ),

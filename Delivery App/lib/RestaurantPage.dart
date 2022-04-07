@@ -52,20 +52,30 @@ class RestaurantPage extends StatefulWidget {
 
 class RestaurantPageState extends State<RestaurantPage> {
   ProdusRepository repository_produs = ProdusRepository();
+
   bool con = false;
   Timer? timer;
+  bool old_con = true;
+  bool is_connected = true;
+  Timer? timer2;
 
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(
-        const Duration(seconds: 3), (Timer t) => AwaitConnection());
-    AwaitConnection();
+      const Duration(seconds: 1),
+      (Timer t) => AwaitConnection(),
+    );
+    timer2 = Timer.periodic(
+      const Duration(seconds: 3),
+      (Timer t) => isConnected(),
+    );
   }
 
   @override
   void dispose() {
     timer?.cancel();
+    timer2?.cancel();
     super.dispose();
   }
 
@@ -116,25 +126,34 @@ class RestaurantPageState extends State<RestaurantPage> {
                           }
                         },
                       )
-                    : Column(
-                        children: const <Widget>[
-                          CircularProgressIndicator(),
-                          SizedBox(height: 25),
-                          Text(
-                            "Loading ...",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 0, 0),
+                    : is_connected
+                        ? Center(
+                            child: Column(
+                              children: const <Widget>[
+                                CircularProgressIndicator(),
+                                SizedBox(height: 25),
+                                Text(
+                                  "Se încarcă ... ",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 0, 0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Center(
+                            child: Column(
+                              children: const <Widget>[
+                                SizedBox(height: 10),
+                                Text(
+                                  "Verifică conexiunea la internet",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 0, 0),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Verifică conexiunea la internet",
-                            style: TextStyle(
-                              color: Color.fromARGB(255, 255, 0, 0),
-                            ),
-                          ),
-                        ],
-                      ),
               ),
             ],
           ),
@@ -193,5 +212,15 @@ class RestaurantPageState extends State<RestaurantPage> {
     if (oldcon != con) {
       setState(() {});
     }
+  }
+
+  isConnected() {
+    if (con == old_con && con == false) {
+      is_connected = false;
+      setState(() {});
+    } else {
+      is_connected = true;
+    }
+    old_con = con;
   }
 }

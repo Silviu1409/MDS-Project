@@ -76,7 +76,6 @@ class LoginPageState extends State<LoginPage> {
                         shape: BoxShape.circle,
                       ),
                     ),
-                    //TBD mesaj de login
                     const Text("Welcome back!",
                         style: TextStyle(
                             fontFamily: 'Lato-Black',
@@ -116,6 +115,12 @@ class LoginPageState extends State<LoginPage> {
                                   borderSide: BorderSide(
                                       color: Colors.grey, width: 2.0),
                                 ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
                                 hintText: 'Email',
                                 prefixIcon: Icon(Icons.mail_outline),
                               ),
@@ -143,6 +148,12 @@ class LoginPageState extends State<LoginPage> {
                               },
                               decoration: InputDecoration(
                                 enabledBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                focusedBorder: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20.0)),
                                   borderSide: BorderSide(

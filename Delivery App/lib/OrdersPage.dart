@@ -33,21 +33,31 @@ class OrdersPage extends StatefulWidget {
 
 class OrdersPageState extends State<OrdersPage> {
   final ShoppingRepository repository_cart = ShoppingRepository();
+
   bool con = false;
   Timer? timer;
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
+  bool old_con = true;
+  bool is_connected = true;
+  Timer? timer2;
 
   @override
   void initState() {
     super.initState();
     timer = Timer.periodic(
-        const Duration(seconds: 1), (Timer t) => AwaitConnection());
-    AwaitConnection();
+      const Duration(seconds: 1),
+      (Timer t) => AwaitConnection(),
+    );
+    timer2 = Timer.periodic(
+      const Duration(seconds: 3),
+      (Timer t) => isConnected(),
+    );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    timer2?.cancel();
+    super.dispose();
   }
 
   AwaitConnection() async {
@@ -56,6 +66,16 @@ class OrdersPageState extends State<OrdersPage> {
     if (oldcon != con) {
       setState(() {});
     }
+  }
+
+  isConnected() {
+    if (con == old_con && con == false) {
+      is_connected = false;
+      setState(() {});
+    } else {
+      is_connected = true;
+    }
+    old_con = con;
   }
 
   @override
@@ -111,25 +131,34 @@ class OrdersPageState extends State<OrdersPage> {
                                 }
                               },
                             )
-                          : Column(
-                              children: const <Widget>[
-                                CircularProgressIndicator(),
-                                SizedBox(height: 25),
-                                Text(
-                                  "Loading ...",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 255, 0, 0),
+                          : is_connected
+                              ? Center(
+                                  child: Column(
+                                    children: const <Widget>[
+                                      CircularProgressIndicator(),
+                                      SizedBox(height: 25),
+                                      Text(
+                                        "Se încarcă ... ",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 255, 0, 0),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Center(
+                                  child: Column(
+                                    children: const <Widget>[
+                                      SizedBox(height: 10),
+                                      Text(
+                                        "Verifică conexiunea la internet",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 255, 0, 0),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(height: 10),
-                                Text(
-                                  "Verifică conexiunea la internet",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 255, 0, 0),
-                                  ),
-                                ),
-                              ],
-                            ),
                     ),
                   ],
                 ),
