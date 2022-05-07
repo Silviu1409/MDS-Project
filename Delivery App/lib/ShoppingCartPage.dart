@@ -111,12 +111,8 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
         shoppingcartitems.add(prod);
         i += 1;
       }
-      print("Shopping cart:\n$shoppingcartitems");
-      print("Pret total: $pret_total");
       shoppingcartdet = shoppingcartitems;
       total = pret_total;
-    } else {
-      print("Niciun shopping cart activ.");
     }
     setState(() {});
   }
@@ -153,7 +149,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                                   style: TextStyle(
                                     fontFamily: 'Lato-Black',
                                     fontSize: 20.0,
-                                    color: Colors.red,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 )
@@ -194,7 +190,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                               style: const TextStyle(
                                 fontFamily: 'Lato-Black',
                                 fontSize: 30.0,
-                                color: Colors.red,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

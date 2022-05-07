@@ -48,28 +48,6 @@ class RegisterPageState extends State<RegisterPage> {
       onWillPop: () => Future.value(false),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation1, animation2) =>
-                        const LoginPageWidget(),
-                    transitionDuration: Duration.zero,
-                    reverseTransitionDuration: Duration.zero,
-                  ),
-                );
-              },
-            )
-          ],
-        ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
@@ -83,7 +61,7 @@ class RegisterPageState extends State<RegisterPage> {
             ),
             child: SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.all(30.0),
+                padding: const EdgeInsets.only(top: 100.0),
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -285,19 +263,19 @@ class RegisterPageState extends State<RegisterPage> {
                               isFormValid = true;
                               formkey.currentState!.validate();
                               if (isFormValid == false) {
-                                print("Form is not valid!");
                                 isFormValid = true;
                                 return;
                               }
                               final newUser = User(
-                                  email: email,
-                                  password: password,
-                                  username: username,
-                                  phoneno: phoneno,
-                                  role: "user");
+                                email: email,
+                                password: password,
+                                username: username,
+                                phoneno: phoneno,
+                                role: "user",
+                                image: "Charactor-11",
+                              );
                               repository.addUsers(newUser);
                               formkey.currentState?.reset();
-                              print("Registered successfully!");
                               setState(() {});
                               Navigator.push(
                                 context,
@@ -320,6 +298,26 @@ class RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: FloatingActionButton.extended(
+            onPressed: () {
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      const LoginPageWidget(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            },
+            backgroundColor: Colors.red,
+            icon: const Icon(Icons.arrow_back),
+            label: const Text("Înapoi"),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       ),
     );
   }

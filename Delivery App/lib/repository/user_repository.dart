@@ -30,11 +30,8 @@ class UserRepository {
   //   print(res.docs.map((e) => e.reference));
   // }
 
-  // void updatePet(User user) async {
-  //   await collection.doc(user.ref_id).update(user.toJson());
-  // }
-
-  // void deletePet(User user) async {
-  //   await collection.doc(user.ref_id).delete();
-  // }
+  //actualizare user
+  void updateUser(User user) async {
+    await collection.doc(user.ref?.id).update(user.toJson());
+  }
 }
