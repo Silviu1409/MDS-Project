@@ -18,13 +18,13 @@ class OrderItem {
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-      produs: json["product"],
+      produs: json["produs"],
       shoppingcart: json["shoppingcart"],
-      cantitate: json["quantity"]);
+      cantitate: json["cantitate"]);
 
   Map<String, dynamic> toJson() => {
-        "product": produs,
-        "shopping": shoppingcart,
-        "quantity": cantitate,
+        "produs": produs,
+        "shoppingcart": shoppingcart,
+        "cantitate": cantitate,
       };
 }

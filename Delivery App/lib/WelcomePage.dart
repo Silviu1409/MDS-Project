@@ -30,41 +30,6 @@ class WelcomePageState extends State<WelcomePage> {
   void initState() {
     super.initState();
 
-    // slides.add(
-    //   Slide(
-    //     title: "ERASER",
-    //     description:
-    //         "Allow miles wound place the leave had. To sitting subject no improve studied limited",
-    //     pathImage: "images/photo_eraser.png",
-    //     backgroundColor: const Color(0xfff5a623),
-    //   ),
-    // );
-    // slides.add(
-    //   Slide(
-    //     title: "PENCIL",
-    //     description:
-    //         "Ye indulgence unreserved connection alteration appearance",
-    //     pathImage: "images/photo_pencil.png",
-    //     backgroundColor: const Color(0xff203152),
-    //   ),
-    // );
-    // slides.add(
-    //   Slide(
-    //     title: "RULER",
-    //     description:
-    //         "Much evil soon high in hope do view. Out may few northward believing attempted. Yet timed being songs marry one defer men our. Although finished blessing do of",
-    //     pathImage: "images/photo_ruler.png",
-    //     backgroundColor: const Color(0xff9932CC),
-    //   ),
-    // );
-    // slides.add(
-    //   Slide(
-    //     backgroundImage: ("images/slide.png"),
-    //     backgroundImageFit: BoxFit.fill,
-    //     backgroundOpacity: 0,
-    //   ),
-    // );
-
     slides.add(
       Slide(
         backgroundImage: ("images/pizza.png"),

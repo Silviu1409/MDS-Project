@@ -1,12 +1,19 @@
+import 'package:delivery_app/ProductPage.dart';
 import 'package:delivery_app/models/produs.dart';
 import 'package:flutter/material.dart';
+import 'models/restaurant.dart';
 import 'models/user.dart';
 
 class ProductCardWidget extends StatelessWidget {
-  const ProductCardWidget({Key? key, required this.produs, required this.user})
+  const ProductCardWidget(
+      {Key? key,
+      required this.produs,
+      required this.user,
+      required this.restaurant})
       : super(key: key);
   final Produs produs;
   final User user;
+  final Restaurant restaurant;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +25,22 @@ class ProductCardWidget extends StatelessWidget {
       home: ProductCard(
         produs: produs,
         user: user,
+        restaurant: restaurant,
       ),
     );
   }
 }
 
 class ProductCard extends StatefulWidget {
-  const ProductCard({Key? key, required this.produs, required this.user})
+  const ProductCard(
+      {Key? key,
+      required this.produs,
+      required this.user,
+      required this.restaurant})
       : super(key: key);
   final Produs produs;
   final User user;
+  final Restaurant restaurant;
 
   @override
   State<ProductCard> createState() => ProductCardState();
@@ -43,7 +56,7 @@ class ProductCardState extends State<ProductCard> {
       style: TextStyle(
           fontFamily: 'Lato-Black',
           fontSize: 2 * heightval,
-          color: Colors.red,
+          color: Colors.black,
           fontWeight: FontWeight.w700),
     );
   }
@@ -58,7 +71,21 @@ class ProductCardState extends State<ProductCard> {
         ),
       ),
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  ProductPageWidget(
+                produs: widget.produs,
+                user: widget.user,
+                restaurant: widget.restaurant,
+              ),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
+        },
         child: Column(
           children: <Widget>[
             Column(

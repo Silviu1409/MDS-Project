@@ -13,6 +13,40 @@ class OrderItemRepository {
     return collection.add(orderitem.toJson());
   }
 
+  Future<String> checkifprodinOrderItems(
+      String shoppingcartref, String prodref) async {
+    DocumentReference ref_shopping = FirebaseFirestore.instance
+        .collection('shoppingcarts')
+        .doc(shoppingcartref);
+    DocumentReference ref_prod =
+        FirebaseFirestore.instance.collection('produs').doc(prodref);
+    QuerySnapshot<Object?> orderitems = await collection
+        .where("shoppingcart", isEqualTo: ref_shopping)
+        .where("produs", isEqualTo: ref_prod)
+        .get();
+    if (orderitems.size != 0) {
+      return orderitems.docs.first.id;
+    } else {
+      return "";
+    }
+  }
+
+  void updateOrderItem(OrderItem orderItem) async {
+    await collection.doc(orderItem.ref?.id).update(orderItem.toJson());
+  }
+
+  Future<OrderItem> getOrderItem(String ref_orderitem) async {
+    var date = (await collection.doc(ref_orderitem).get());
+    OrderItem orderItem = OrderItem(
+      produs: date["produs"],
+      shoppingcart: date["shoppingcart"],
+      cantitate: date["cantitate"],
+    );
+    orderItem.ref = collection.doc(ref_orderitem);
+
+    return orderItem;
+  }
+
   Future<QuerySnapshot<Object?>> searchOrderItem(
       String shoppingcartref, String produsref) {
     DocumentReference ref_shopping = FirebaseFirestore.instance
@@ -21,7 +55,7 @@ class OrderItemRepository {
     DocumentReference ref_produs =
         FirebaseFirestore.instance.collection('produs').doc(produsref);
     return collection
-        .where("product", isEqualTo: ref_produs)
+        .where("produs", isEqualTo: ref_produs)
         .where("shoppingcart", isEqualTo: ref_shopping)
         .get();
   }
@@ -61,12 +95,4 @@ class OrderItemRepository {
     }
     return cantitati;
   }
-
-  // void updatePet(User user) async {
-  //   await collection.doc(user.ref_id).update(user.toJson());
-  // }
-
-  // void deletePet(User user) async {
-  //   await collection.doc(user.ref_id).delete();
-  // }
 }
