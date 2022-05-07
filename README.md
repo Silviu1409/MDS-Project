@@ -12,7 +12,7 @@ Proiect realizat pentru disciplina "Metode de dezvoltare software" din cadrul Fa
 
 # Backlog
 
-In order to create the backlog for our application we used Trello.[The link for the backlog.](https://trello.com/b/9RWTZwVI/mds-project).
+In order to create the backlog for our application we used Trello.[The link for the backlog.](https://trello.com/b/9RWTZwVI/mds-project)
 
 
 # User stories
