@@ -40,11 +40,17 @@ class ShoppingRepository {
     return doc_id;
   }
 
-  // void updatePet(User user) async {
-  //   await collection.doc(user.ref_id).update(user.toJson());
-  // }
-
-  // void deletePet(User user) async {
-  //   await collection.doc(user.ref_id).delete();
-  // }
+  Future<DocumentReference?> searchActiveShoppingcarts2(
+      DocumentReference? userref) async {
+    var query = collection
+        .where("user", isEqualTo: userref)
+        .where("finished", isEqualTo: false)
+        .limit(1);
+    var snapshots = await query.get();
+    if (snapshots.size == 0) {
+      return null;
+    } else {
+      return snapshots.docs.first.reference;
+    }
+  }
 }

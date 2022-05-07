@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ShoppingCartProductCardWidget extends StatelessWidget {
-  ShoppingCartProductCardWidget({Key? key, required this.detalii_produs})
+  const ShoppingCartProductCardWidget({Key? key, required this.detalii_produs})
       : super(key: key);
-  Map<String, dynamic> detalii_produs;
+  final Map<String, dynamic> detalii_produs;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class ShoppingCartProductCardWidget extends StatelessWidget {
 }
 
 class ShoppingCartProductCard extends StatefulWidget {
-  ShoppingCartProductCard({Key? key, required this.detalii_produs})
+  const ShoppingCartProductCard({Key? key, required this.detalii_produs})
       : super(key: key);
-  Map<String, dynamic> detalii_produs;
+  final Map<String, dynamic> detalii_produs;
 
   @override
   State<ShoppingCartProductCard> createState() =>
@@ -38,7 +38,7 @@ class ShoppingCartProductCardState extends State<ShoppingCartProductCard> {
       style: TextStyle(
           fontFamily: 'Lato-Black',
           fontSize: 2 * heightval,
-          color: Colors.red,
+          color: Colors.black,
           fontWeight: FontWeight.w700),
     );
   }

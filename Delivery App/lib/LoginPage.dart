@@ -46,9 +46,6 @@ class LoginPageState extends State<LoginPage> {
       onWillPop: () => Future.value(false),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Container(
@@ -62,7 +59,7 @@ class LoginPageState extends State<LoginPage> {
             ),
             child: SingleChildScrollView(
               child: Container(
-                padding: const EdgeInsets.only(top: 50.0),
+                padding: const EdgeInsets.only(top: 100.0),
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -190,7 +187,6 @@ class LoginPageState extends State<LoginPage> {
                               isFormValid = true;
                               formkey.currentState!.validate();
                               if (isFormValid == false) {
-                                print("Form is not valid!");
                                 isFormValid = true;
                                 return;
                               }
@@ -200,9 +196,7 @@ class LoginPageState extends State<LoginPage> {
                                   res.docs.map((doc) => doc.data()).toList();
                               if (data.isEmpty ||
                                   (email == "" && password == "")) {
-                                print("Could not log in!");
                               } else {
-                                print("Logged in!");
                                 setState(() {
                                   email = "";
                                   password = "";
@@ -218,6 +212,7 @@ class LoginPageState extends State<LoginPage> {
                                   phoneno: date['phoneno'] as String,
                                   role: date['role'] as String,
                                   username: date['username'] as String,
+                                  image: date['image'] as String,
                                 );
                                 user.ref = ref;
                                 Navigator.push(

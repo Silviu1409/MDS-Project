@@ -18,12 +18,4 @@ class ProdusRepository {
       DocumentReference? ref) {
     return collection.where("restaurant", isEqualTo: ref).snapshots();
   }
-
-  // void updatePet(User user) async {
-  //   await collection.doc(user.ref_id).update(user.toJson());
-  // }
-
-  // void deletePet(User user) async {
-  //   await collection.doc(user.ref_id).delete();
-  // }
 }

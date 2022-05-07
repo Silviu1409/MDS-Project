@@ -36,12 +36,12 @@ class RestaurantPageWidget extends StatelessWidget {
 }
 
 class RestaurantPage extends StatefulWidget {
-  const RestaurantPage(
-      {Key? key,
-      required this.title,
-      required this.restaurant,
-      required this.user})
-      : super(key: key);
+  const RestaurantPage({
+    Key? key,
+    required this.title,
+    required this.restaurant,
+    required this.user,
+  }) : super(key: key);
   final String title;
   final Restaurant restaurant;
   final User user;
@@ -103,7 +103,7 @@ class RestaurantPageState extends State<RestaurantPage> {
                 style: TextStyle(
                     fontFamily: 'Lato-Black',
                     fontSize: 25,
-                    color: Colors.red,
+                    color: Colors.black,
                     fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 50),
@@ -200,6 +200,7 @@ class RestaurantPageState extends State<RestaurantPage> {
         ProductCard(
           produs: produs,
           user: widget.user,
+          restaurant: widget.restaurant,
         ),
         const SizedBox(height: 25),
       ],

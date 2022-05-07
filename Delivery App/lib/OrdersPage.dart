@@ -117,7 +117,7 @@ class OrdersPageState extends State<OrdersPage> {
                                       style: TextStyle(
                                           fontFamily: 'Lato-Black',
                                           fontSize: 20,
-                                          color: Colors.red,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w700),
                                     );
                                   } else {
