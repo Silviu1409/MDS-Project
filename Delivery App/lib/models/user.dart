@@ -11,6 +11,7 @@ class User {
   String username;
   String phoneno;
   String role;
+  String image;
   DocumentReference? ref;
 
   User({
@@ -19,6 +20,7 @@ class User {
     required this.username,
     required this.phoneno,
     required this.role,
+    required this.image,
   });
 
   factory User.fromSnapshot(DocumentSnapshot snapshot) {
@@ -33,6 +35,7 @@ class User {
         username: json["username"],
         phoneno: json["phoneno"],
         role: json["role"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class User {
         "username": username,
         "phoneno": phoneno,
         "role": role,
+        "image": image,
       };
 }

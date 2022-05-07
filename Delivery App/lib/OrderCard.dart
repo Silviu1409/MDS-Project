@@ -37,7 +37,7 @@ class OrderCardState extends State<OrderCard> {
       style: TextStyle(
           fontFamily: 'Lato-Black',
           fontSize: 2 * heightval,
-          color: Colors.red,
+          color: Colors.black,
           fontWeight: FontWeight.w700),
     );
   }

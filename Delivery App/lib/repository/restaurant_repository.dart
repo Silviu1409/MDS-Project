@@ -13,12 +13,4 @@ class RestaurantRepository {
   Future<DocumentReference> addRestaurants(Restaurant restaurant) {
     return collection.add(restaurant.toJson());
   }
-
-  // void updatePet(User user) async {
-  //   await collection.doc(user.ref_id).update(user.toJson());
-  // }
-
-  // void deletePet(User user) async {
-  //   await collection.doc(user.ref_id).delete();
-  // }
 }
