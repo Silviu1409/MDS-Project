@@ -4,7 +4,7 @@ Proiect realizat pentru disciplina "Metode de dezvoltare software" din cadrul Fa
 
 # Description of application
 
--
+Our project is a Android mobile app for food delivery. The app gives you access to our partener restaurants and you can order their goods with just one click.  Imagine how easy it is to not waste your time driving around town to get your food exactly at your desire address. The food will be deliverd by our drivers that get your order from your favourite restaurant and bring it to you. Beside our clients interface, delivers have a special interface that gives them the ability to accept or reject deliveries and where they can see the orders recived with the suitable description.
 
 # Demo
 
@@ -24,7 +24,7 @@ In order to create the backlog for our application we used Trello.[The link for 
 3. As a user, I want to add a food item to the shopping cart.
 4. As a user, I want to remove a food item from the shopping cart.
 5. As a user, I want see my items in the shopping cart.
-6. As a user, I want to select multiple food items from a restaurant
+6. As a user, I want to select multiple food items from a restaurant.
 7. As a user, I want to be able to cancel an order if the restaurant didn't start preparing it.
 8. As a user, I want to be able to have an profile avatar. 
 9. As a user, I want to see restaurants on google maps.
