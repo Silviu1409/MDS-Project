@@ -41,6 +41,7 @@ class RestaurantCardState extends State<RestaurantCard> {
 
     return Text(
       text,
+      overflow: TextOverflow.fade,
       style: TextStyle(
           fontFamily: 'Lato-Black',
           fontSize: 2 * heightval,
@@ -88,17 +89,19 @@ class RestaurantCardState extends State<RestaurantCard> {
               ),
             ),
             const SizedBox(width: 15),
-            Column(
-              children: <Widget>[
-                customText(
-                  context,
-                  widget.restaurant.nume,
-                ),
-                customText(
-                  context,
-                  widget.restaurant.adresa,
-                ),
-              ],
+            Flexible(
+              child: Column(
+                children: <Widget>[
+                  customText(
+                    context,
+                    widget.restaurant.nume,
+                  ),
+                  customText(
+                    context,
+                    widget.restaurant.adresa,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

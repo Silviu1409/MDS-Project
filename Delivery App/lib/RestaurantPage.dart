@@ -109,22 +109,24 @@ class RestaurantPageState extends State<RestaurantPage> {
               const SizedBox(height: 50),
               Container(
                 child: con
-                    ? StreamBuilder<QuerySnapshot>(
-                        stream: repository_produs
-                            .getProductsforRestaurant(widget.restaurant.ref),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          } else if (snapshot.hasData) {
-                            return _buildList(
-                                context, snapshot.data?.docs ?? []);
-                          } else if (snapshot.hasError) {
-                            return const Text("No data available");
-                          } else {
-                            return const LinearProgressIndicator();
-                          }
-                        },
+                    ? Center(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: repository_produs
+                              .getProductsforRestaurant(widget.restaurant.ref),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasData) {
+                              return _buildList(
+                                  context, snapshot.data?.docs ?? []);
+                            } else if (snapshot.hasError) {
+                              return const Text("No data available");
+                            } else {
+                              return const LinearProgressIndicator();
+                            }
+                          },
+                        ),
                       )
                     : is_connected
                         ? Center(

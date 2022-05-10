@@ -35,6 +35,10 @@ class OrderItemRepository {
     await collection.doc(orderItem.ref?.id).update(orderItem.toJson());
   }
 
+  void removeOrderItem(OrderItem orderItem) async {
+    await collection.doc(orderItem.ref?.id).delete();
+  }
+
   Future<OrderItem> getOrderItem(String ref_orderitem) async {
     var date = (await collection.doc(ref_orderitem).get());
     OrderItem orderItem = OrderItem(
@@ -45,6 +49,26 @@ class OrderItemRepository {
     orderItem.ref = collection.doc(ref_orderitem);
 
     return orderItem;
+  }
+
+  Future<List<OrderItem>> getOrderItemsforShoppingCart(
+      String shoppingcartref) async {
+    DocumentReference ref_shopping = FirebaseFirestore.instance
+        .collection('shoppingcarts')
+        .doc(shoppingcartref);
+    var date =
+        (await collection.where("shoppingcart", isEqualTo: ref_shopping).get());
+    List<OrderItem> lista = [];
+    for (var x in date.docs) {
+      OrderItem orderItem = OrderItem(
+        produs: x["produs"],
+        shoppingcart: x["shoppingcart"],
+        cantitate: x["cantitate"],
+      );
+      orderItem.ref = x.reference;
+      lista.add(orderItem);
+    }
+    return lista;
   }
 
   Future<QuerySnapshot<Object?>> searchOrderItem(
