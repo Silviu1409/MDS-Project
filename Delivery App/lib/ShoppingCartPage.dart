@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery_app/ShoppingCartProductCard.dart';
+import 'package:delivery_app/models/orderitem.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'models/user.dart';
@@ -38,16 +39,15 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
 
   List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
 
-  double total = 0;
-  bool con = false;
-  Timer? timer;
-  bool old_con = true;
-  bool is_connected = true;
-  Timer? timer2;
+  num total = 0;
+  bool con = false, old_con = true, is_connected = true;
+  Timer? timer, timer2;
+  static bool loading = false;
 
   @override
   void initState() {
     super.initState();
+    getproducts();
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (Timer t) => AwaitConnection(),
@@ -60,9 +60,9 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
 
   @override
   void dispose() {
+    super.dispose();
     timer?.cancel();
     timer2?.cancel();
-    super.dispose();
   }
 
   AwaitConnection() async {
@@ -92,29 +92,37 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
     if (cart_ref != "") {
       List<DocumentSnapshot<Object?>> produse =
           await repository_orderitem.getItemsforShoppingCart(cart_ref);
+      List<OrderItem> orderitems =
+          await repository_orderitem.getOrderItemsforShoppingCart(cart_ref);
       List<int> cant = await repository_orderitem.getCant(cart_ref);
-      double pret_total = 0;
+      num pret_total = 0;
       List<Map<String, dynamic>> shoppingcartitems = [];
-      int i = 0;
-      for (DocumentSnapshot doc in produse) {
-        double pret = doc.get("price");
-        int c = cant[i];
+      int j = 0;
+      for (var i = 0; i < produse.length; i++) {
+        var doc1 = produse[i];
+        var doc2 = orderitems[i];
+        num pret = doc1.get("price");
+        int c = cant[j];
         Map<String, dynamic> prod = {
-          "nume": "",
-          "pret": 0.0,
-          "cantitate": 0,
+          "nume": doc1.get("name"),
+          "pret": pret,
+          "cantitate": c,
+          "orderitem": OrderItem(
+              cantitate: doc2.cantitate,
+              shoppingcart: doc2.shoppingcart,
+              produs: doc2.produs),
         };
-        prod["nume"] = doc.get("name");
-        prod["pret"] = pret;
-        prod["cantitate"] = c;
+        prod["orderitem"].ref = doc2.ref;
         pret_total += pret * c;
         shoppingcartitems.add(prod);
-        i += 1;
+        j += 1;
       }
       shoppingcartdet = shoppingcartitems;
       total = pret_total;
     }
-    setState(() {});
+    setState(() {
+      loading = false;
+    });
   }
 
   @override
@@ -183,10 +191,10 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                                 ),
                     ),
                     Container(
-                      child: (total == 0)
+                      child: (total == 0 || !con || loading)
                           ? null
                           : Text(
-                              "Total: $total",
+                              "Total: ${total.toStringAsFixed(2)} lei",
                               style: const TextStyle(
                                 fontFamily: 'Lato-Black',
                                 fontSize: 30.0,
@@ -195,6 +203,9 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                               ),
                             ),
                     ),
+                    const SizedBox(
+                      height: 60,
+                    )
                   ],
                 ),
               ),
@@ -225,6 +236,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
       children: <Widget>[
         ShoppingCartProductCard(
           detalii_produs: produs,
+          state: this,
         ),
         const SizedBox(height: 20),
       ],

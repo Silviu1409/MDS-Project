@@ -44,6 +44,7 @@ class MainUserPageState extends State<MainUserPage> {
   int _selectedIndex = 0;
   List<Widget> pages = [];
   int no_items = 0;
+  Timer? timer;
 
   final ShoppingRepository repository_cart = ShoppingRepository();
   final OrderItemRepository repository_orderitem = OrderItemRepository();
@@ -60,6 +61,10 @@ class MainUserPageState extends State<MainUserPage> {
       AccountPageWidget(user: widget.user),
     ];
     getnoproductsshoppingcart();
+    timer = Timer.periodic(
+      const Duration(milliseconds: 250),
+      (Timer t) => getnoproductsshoppingcart(),
+    );
   }
 
   void _onItemTapped(int index) {

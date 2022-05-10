@@ -69,6 +69,10 @@ class ProductPageState extends State<ProductPage> {
   Timer? timer2;
   int nr_prod = 1;
 
+  bool addedprodtocard = false;
+  bool mesajafisat = false;
+  Timer? timer3;
+
   final ShoppingRepository repository_cart = ShoppingRepository();
   final OrderItemRepository repository_orderitem = OrderItemRepository();
 
@@ -83,12 +87,17 @@ class ProductPageState extends State<ProductPage> {
       const Duration(seconds: 3),
       (Timer t) => isConnected(),
     );
+    timer3 = Timer.periodic(
+      const Duration(seconds: 3),
+      (Timer t) => shoppingcartalert(),
+    );
   }
 
   @override
   void dispose() {
     timer?.cancel();
     timer2?.cancel();
+    timer3?.cancel();
     super.dispose();
   }
 
@@ -124,7 +133,7 @@ class ProductPageState extends State<ProductPage> {
               ),
               const SizedBox(height: 25),
               Text(
-                "Pret: ${widget.produs.pret}",
+                "Pret: ${widget.produs.pret} lei",
                 style: TextStyle(
                     fontFamily: 'Lato-Black',
                     fontSize: MediaQuery.of(context).size.height * 0.01 * 2.5,
@@ -167,7 +176,7 @@ class ProductPageState extends State<ProductPage> {
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
                 child: Text(
-                  "Adaugă în coș \t\t\t\t\t ${nr_prod * widget.produs.pret} lei",
+                  "Adaugă în coș \t\t\t\t\t ${(nr_prod * widget.produs.pret).toStringAsFixed(2)} lei",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize:
@@ -195,8 +204,31 @@ class ProductPageState extends State<ProductPage> {
                     repository_orderitem.addOrderItem(orderitem);
                   }
                   nr_prod = 1;
-                  setState(() {});
+                  setState(() {
+                    addedprodtocard = true;
+                  });
                 },
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                child: addedprodtocard
+                    ? Column(
+                        children: <Widget>[
+                          Text(
+                            "Produs adăugat în coș!",
+                            style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.height *
+                                    0.01 *
+                                    1.75),
+                          ),
+                          const SizedBox(
+                            height: 75,
+                          ),
+                        ],
+                      )
+                    : const SizedBox(height: 100),
               ),
             ],
           ),
@@ -244,5 +276,18 @@ class ProductPageState extends State<ProductPage> {
       is_connected = true;
     }
     old_con = con;
+  }
+
+  shoppingcartalert() {
+    if (addedprodtocard && mesajafisat) {
+      setState(() {
+        addedprodtocard = false;
+        mesajafisat = false;
+      });
+    } else if (addedprodtocard) {
+      setState(() {
+        mesajafisat = true;
+      });
+    }
   }
 }
