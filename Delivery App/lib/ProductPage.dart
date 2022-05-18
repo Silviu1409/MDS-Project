@@ -120,18 +120,26 @@ class ProductPageState extends State<ProductPage> {
                     fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 100),
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  "\t\t\t\t\t\tDescriere: ${widget.produs.descriere}",
-                  style: TextStyle(
-                      fontFamily: 'Lato-Black',
-                      fontSize: MediaQuery.of(context).size.height * 0.01 * 2.5,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(height: 25),
+              (widget.produs.descriere != null && widget.produs.descriere != "")
+                  ? Column(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            "\t\t\t\t\t\tDescriere: ${widget.produs.descriere}",
+                            style: TextStyle(
+                                fontFamily: 'Lato-Black',
+                                fontSize: MediaQuery.of(context).size.height *
+                                    0.01 *
+                                    2.5,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                      ],
+                    )
+                  : const SizedBox(),
               Text(
                 "Pret: ${widget.produs.pret} lei",
                 style: TextStyle(

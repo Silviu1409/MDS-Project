@@ -43,13 +43,11 @@ class MainUserPage extends StatefulWidget {
 class MainUserPageState extends State<MainUserPage> {
   int _selectedIndex = 0;
   List<Widget> pages = [];
-  int no_items = 0;
+  static int no_items = 0;
   Timer? timer;
 
   final ShoppingRepository repository_cart = ShoppingRepository();
   final OrderItemRepository repository_orderitem = OrderItemRepository();
-
-  List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
 
   @override
   void initState() {
@@ -65,6 +63,12 @@ class MainUserPageState extends State<MainUserPage> {
       const Duration(milliseconds: 250),
       (Timer t) => getnoproductsshoppingcart(),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
   }
 
   void _onItemTapped(int index) {
@@ -102,6 +106,7 @@ class MainUserPageState extends State<MainUserPage> {
         floatingActionButton: (_selectedIndex == 3)
             ? FloatingActionButton.extended(
                 onPressed: () {
+                  dispose();
                   Navigator.push(
                     context,
                     PageRouteBuilder(
@@ -116,14 +121,7 @@ class MainUserPageState extends State<MainUserPage> {
                 icon: const Icon(Icons.logout),
                 label: const Text("Logout"),
               )
-            : (_selectedIndex == 1)
-                ? FloatingActionButton.extended(
-                    onPressed: () {},
-                    backgroundColor: Colors.red,
-                    icon: const Icon(Icons.shopping_cart_checkout),
-                    label: const Text("Comandă"),
-                  )
-                : null,
+            : null,
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
             const BottomNavigationBarItem(

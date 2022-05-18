@@ -94,10 +94,13 @@ class ProductCardState extends State<ProductCard> {
                   context,
                   "Nume: ${widget.produs.nume}",
                 ),
-                customText(
-                  context,
-                  "Descriere: ${widget.produs.descriere}",
-                ),
+                (widget.produs.descriere != null &&
+                        widget.produs.descriere != "")
+                    ? customText(
+                        context,
+                        "Descriere: ${widget.produs.descriere}",
+                      )
+                    : const SizedBox(),
                 customText(
                   context,
                   "Pret: ${widget.produs.pret}",

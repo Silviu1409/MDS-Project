@@ -54,6 +54,7 @@ class WelcomePageState extends State<WelcomePage> {
   }
 
   void onDonePress() {
+    dispose();
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const LoginPageWidget()),
@@ -105,7 +106,7 @@ class WelcomePageState extends State<WelcomePage> {
         doneButtonStyle: myButtonStyle(),
         colorDot: const Color(0x33FFA8B0),
         colorActiveDot: const Color(0xffFFA8B0),
-        sizeDot: 13.0,
+        sizeDot: 15.0,
         hideStatusBar: true,
         backgroundColorAllSlides: Colors.transparent,
         verticalScrollbarBehavior: scrollbarBehavior.SHOW_ALWAYS,
