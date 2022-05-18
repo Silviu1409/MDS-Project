@@ -10,6 +10,9 @@ String userToJson(ShoppingCart shoppingcart) =>
 class ShoppingCart {
   bool finished;
   String? datetime;
+  num? total;
+  String? address;
+  int? state;
   DocumentReference? user;
   DocumentReference? ref;
 
@@ -17,6 +20,9 @@ class ShoppingCart {
     required this.user,
     required this.finished,
     this.datetime,
+    this.total,
+    this.address,
+    this.state,
   });
 
   factory ShoppingCart.fromSnapshot(DocumentSnapshot snapshot) {
@@ -30,11 +36,17 @@ class ShoppingCart {
         user: json["user"],
         finished: json["finished"],
         datetime: json["datetime"],
+        total: json["total"],
+        address: json["address"],
+        state: json["state"],
       );
 
   Map<String, dynamic> toJson() => {
         "user": user,
         "finished": finished,
         "datetime": datetime,
+        "total": total,
+        "address": address,
+        "state": state,
       };
 }

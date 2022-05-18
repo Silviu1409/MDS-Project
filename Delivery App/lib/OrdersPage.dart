@@ -34,11 +34,9 @@ class OrdersPage extends StatefulWidget {
 class OrdersPageState extends State<OrdersPage> {
   final ShoppingRepository repository_cart = ShoppingRepository();
 
-  bool con = false;
-  Timer? timer;
-  bool old_con = true;
-  bool is_connected = true;
-  Timer? timer2;
+  Timer? timer, timer2;
+  bool con = false, old_con = true, is_connected = true;
+  int nr_comanda = 0;
 
   @override
   void initState() {
@@ -182,11 +180,14 @@ class OrdersPageState extends State<OrdersPage> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
     final order = ShoppingCart.fromSnapshot(snapshot);
+    nr_comanda += 1;
 
     return Column(
       children: <Widget>[
         OrderCard(
           shoppingCart: order,
+          user: widget.user,
+          nr_comanda: nr_comanda,
         ),
         const SizedBox(height: 20),
       ],

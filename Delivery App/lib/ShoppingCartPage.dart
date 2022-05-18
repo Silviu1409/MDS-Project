@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:delivery_app/MainUserPage.dart';
 import 'package:delivery_app/ShoppingCartProductCard.dart';
 import 'package:delivery_app/models/orderitem.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'models/shoppingcart.dart';
 import 'models/user.dart';
 import 'repository/orderitem_repository.dart';
 import 'repository/shopping_repository.dart';
+import 'package:intl/intl.dart';
 
 class ShoppingCartPageWidget extends StatelessWidget {
   const ShoppingCartPageWidget({Key? key, required this.user})
@@ -38,11 +41,13 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
   final OrderItemRepository repository_orderitem = OrderItemRepository();
 
   List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
+  late ShoppingCart shoppingCart;
 
   num total = 0;
-  bool con = false, old_con = true, is_connected = true;
+  bool con = false, old_con = true, is_connected = true, isFormValid = true;
   Timer? timer, timer2;
   static bool loading = false;
+  String address = "";
 
   @override
   void initState() {
@@ -89,6 +94,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
   void getproducts() async {
     String cart_ref =
         await repository_cart.searchActiveShoppingcarts(widget.user.ref);
+    shoppingCart = await repository_cart.getShoppingCart(cart_ref);
     if (cart_ref != "") {
       List<DocumentSnapshot<Object?>> produse =
           await repository_orderitem.getItemsforShoppingCart(cart_ref);
@@ -130,7 +136,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -203,8 +209,47 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                               ),
                             ),
                     ),
+                    Container(
+                      padding: const EdgeInsets.all(30),
+                      child: (total != 0)
+                          ? TextFormField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              autocorrect: false,
+                              onChanged: (value) {
+                                setState(() {
+                                  address = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  isFormValid = false;
+                                  return "* Required";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              decoration: const InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                hintText: 'Adresă',
+                                prefixIcon: Icon(Icons.home),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ),
                     const SizedBox(
-                      height: 60,
+                      height: 50,
                     )
                   ],
                 ),
@@ -212,6 +257,39 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
             ),
           ],
         ),
+        floatingActionButton: (total == 0)
+            ? null
+            : (address == "")
+                ? FloatingActionButton.extended(
+                    onPressed: () {},
+                    backgroundColor: Colors.grey,
+                    icon: const Icon(Icons.shopping_cart_checkout),
+                    label: const Text("Comandă"),
+                  )
+                : FloatingActionButton.extended(
+                    onPressed: () {
+                      shoppingCart.address = address;
+                      shoppingCart.finished = true;
+                      shoppingCart.total = num.parse(total.toStringAsFixed(2));
+                      DateTime now = DateTime.now();
+                      DateTime data = DateTime(now.year, now.month, now.day,
+                          now.hour, now.minute, now.second);
+                      shoppingCart.datetime =
+                          DateFormat('dd/MM/yyyy, HH:mm').format(data);
+                      repository_cart.updateCart(shoppingCart);
+                      final newShoppingcart = ShoppingCart(
+                        user: widget.user.ref,
+                        finished: false,
+                        datetime: "",
+                      );
+                      repository_cart.addShoppingCarts(newShoppingcart);
+                      MainUserPageState.no_items = 0;
+                      getproducts();
+                    },
+                    backgroundColor: Colors.red,
+                    icon: const Icon(Icons.shopping_cart_checkout),
+                    label: const Text("Comandă"),
+                  ),
       ),
     );
   }

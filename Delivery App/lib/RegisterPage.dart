@@ -277,6 +277,7 @@ class RegisterPageState extends State<RegisterPage> {
                               repository.addUsers(newUser);
                               formkey.currentState?.reset();
                               setState(() {});
+                              dispose();
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
@@ -302,6 +303,7 @@ class RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.only(top: 20.0),
           child: FloatingActionButton.extended(
             onPressed: () {
+              dispose();
               Navigator.push(
                 context,
                 PageRouteBuilder(

@@ -10,6 +10,10 @@ class RestaurantRepository {
     return collection.snapshots();
   }
 
+  Stream<QuerySnapshot<Object?>> getSearchRestaurants(String search) {
+    return collection.where("name", isEqualTo: search).get().asStream();
+  }
+
   Future<DocumentReference> addRestaurants(Restaurant restaurant) {
     return collection.add(restaurant.toJson());
   }

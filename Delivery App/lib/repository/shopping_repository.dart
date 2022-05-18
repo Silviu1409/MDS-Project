@@ -23,7 +23,6 @@ class ShoppingRepository {
     return collection
         .where("user", isEqualTo: userref)
         .where("finished", isEqualTo: true)
-        .limit(1)
         .snapshots();
   }
 
@@ -40,6 +39,17 @@ class ShoppingRepository {
     return doc_id;
   }
 
+  Future<ShoppingCart> getShoppingCart(String cartref) async {
+    var query = await collection.doc(cartref).get();
+    ShoppingCart shoppingCart = ShoppingCart(
+      user: query["user"],
+      finished: query["finished"],
+      state: query["state"],
+    );
+    shoppingCart.ref = query.reference;
+    return shoppingCart;
+  }
+
   Future<DocumentReference?> searchActiveShoppingcarts2(
       DocumentReference? userref) async {
     var query = collection
@@ -52,5 +62,9 @@ class ShoppingRepository {
     } else {
       return snapshots.docs.first.reference;
     }
+  }
+
+  void updateCart(ShoppingCart shoppingCart) async {
+    await collection.doc(shoppingCart.ref?.id).update(shoppingCart.toJson());
   }
 }

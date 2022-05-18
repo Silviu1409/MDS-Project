@@ -38,11 +38,11 @@ class HomePageState extends State<HomePage> {
   var search = "";
   final RestaurantRepository repository_restaurant = RestaurantRepository();
 
-  bool con = false;
-  Timer? timer;
-  bool old_con = true;
-  bool is_connected = true;
-  Timer? timer2;
+  bool con = false,
+      old_con = true,
+      is_connected = true,
+      foundrestaurants = true;
+  Timer? timer, timer2;
 
   @override
   void initState() {
@@ -117,16 +117,30 @@ class HomePageState extends State<HomePage> {
                       Container(
                         child: con
                             ? StreamBuilder<QuerySnapshot>(
-                                stream: repository_restaurant.getRestaurants(),
+                                stream: search == ""
+                                    ? repository_restaurant.getRestaurants()
+                                    : repository_restaurant
+                                        .getSearchRestaurants(search),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     return const CircularProgressIndicator();
+                                  } else if (snapshot.data?.size == 0) {
+                                    return Container(
+                                      padding: const EdgeInsets.only(top: 50),
+                                      child: const Text(
+                                        "Nu am putut găsi restaurantul căutat.",
+                                        style: TextStyle(
+                                          fontFamily: 'Lato-Black',
+                                          fontSize: 20.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    );
                                   } else if (snapshot.hasData) {
                                     return _buildList(
                                         context, snapshot.data?.docs ?? []);
-                                  } else if (snapshot.hasError) {
-                                    return const Text("No data available");
                                   } else {
                                     return const LinearProgressIndicator();
                                   }
@@ -175,6 +189,12 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+    if (snapshot.isEmpty) {
+      foundrestaurants = false;
+    } else {
+      foundrestaurants = true;
+    }
+
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,

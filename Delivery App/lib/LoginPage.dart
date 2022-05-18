@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:delivery_app/MainUserPage.dart';
 import 'package:delivery_app/RegisterPage.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +35,41 @@ class LoginPageState extends State<LoginPage> {
   var password = "";
   bool isPasswdHidden = true;
   bool isFormValid = true;
+  bool loginfailed = false;
+  int? time;
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
   final UserRepository repository = UserRepository();
 
   final email_regex = RegExp(
       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
+  Timer? timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (Timer t) => loginAlert(),
+    );
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  loginAlert() {
+    if (loginfailed == true) {
+      if (DateTime.now().second - time! > 4) {
+        setState(() {
+          loginfailed = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +227,10 @@ class LoginPageState extends State<LoginPage> {
                                   res.docs.map((doc) => doc.data()).toList();
                               if (data.isEmpty ||
                                   (email == "" && password == "")) {
+                                setState(() {
+                                  loginfailed = true;
+                                  time = DateTime.now().second;
+                                });
                               } else {
                                 setState(() {
                                   email = "";
@@ -215,6 +250,7 @@ class LoginPageState extends State<LoginPage> {
                                   image: date['image'] as String,
                                 );
                                 user.ref = ref;
+                                dispose();
                                 Navigator.push(
                                   context,
                                   PageRouteBuilder(
@@ -243,6 +279,7 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
+                          dispose();
                           Navigator.push(
                             context,
                             PageRouteBuilder(
@@ -255,6 +292,21 @@ class LoginPageState extends State<LoginPage> {
                         },
                       ),
                     ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                      child: (loginfailed == true)
+                          ? Text(
+                              "Nu s-a putut face logarea! Reîncearcă.",
+                              style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.height *
+                                    0.01 *
+                                    1.75,
+                              ),
+                            )
+                          : const SizedBox(),
+                    )
                   ],
                 ),
               ),
