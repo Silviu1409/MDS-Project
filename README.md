@@ -25,16 +25,13 @@ In order to create the backlog for our application we used Trello.[The link for 
 4. As a user, I want to remove a food item from the shopping cart.
 5. As a user, I want see my items in the shopping cart.
 6. As a user, I want to select multiple food items from a restaurant.
-7. As a user, I want to be able to cancel an order if the restaurant didn't start preparing it.
-8. As a user, I want to be able to have an profile avatar. 
-9. As a user, I want to see restaurants on google maps.
-10. As a user, I want to find the closest restaurants from my address.
-11. As a user, I want to see a history of my orders.
-12. As a user, I want to be able to use discount codes.
-13. As a delivery driver, I want to have a different interface.
-14. As a delivery driver, I want to receive the order details.
-15. As a delivery driver, I want to be able to accept the order.
-16. As a delivery driver, I want to be able to decline the order.
+7. As a user, I want to be able to have an profile avatar. 
+8. As a user, I want to see a history of my orders.
+9. As a user, I want to be able to edit my account details.
+10. As a delivery driver, I want to have a different interface.
+11. As a delivery driver, I want to receive the order details.
+12. As a delivery driver, I want to be able to accept the order.
+13. As a delivery driver, I want to be able to decline the order.
 
 
 Restaurantele vor contacta delivery_app@gmail.com pentru a-si adauga,scoate si modifica produsele.
