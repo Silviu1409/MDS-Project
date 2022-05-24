@@ -35,6 +35,6 @@ In order to create the backlog for our application we used Trello.[The link for 
 14. As a delivery driver, I want to receive the order details.
 15. As a delivery driver, I want to be able to accept the order.
 16. As a delivery driver, I want to be able to decline the order.
-17. As a restaurant, I want to be able to add new products  in the menu.
-18. As a restaurant, I want to be able to change the current price of products in the menu.
-19. As a restaurant, I want to be able to remove current products from the menu. 
+
+
+Restaurantele vor contacta delivery_app@gmail.com pentru a-si adauga,scoate si modifica produsele.
