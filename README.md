@@ -4,7 +4,7 @@ Proiect realizat pentru disciplina "Metode de dezvoltare software" din cadrul Fa
 
 # Description of application
 
-Our project is a Android mobile app for food delivery. The app gives you access to our partener restaurants and you can order their goods with just one click.  Imagine how easy it is to not waste your time driving around town to get your food exactly at your desire address. The food will be deliverd by our drivers that get your order from your favourite restaurant and bring it to you. Beside our clients interface, delivers have a special interface that gives them the ability to accept or reject deliveries and where they can see the orders recived with the suitable description.
+Our project is a Android mobile app for food delivery. The app gives you access to our partner restaurants and you can order their goods with just one click.  Imagine how easy it is to not waste your time driving around town to get your food exactly at your desire address. The food will be deliverd by our drivers that get your order from your favourite restaurant and bring it to you. Beside our clients interface, delivers have a special interface that gives them the ability to accept or reject deliveries and where they can see the orders recived with the suitable description.
 
 # Demo
 
