@@ -45,7 +45,26 @@ class RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () async {
+        return await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Exit App'),
+                content: const Text('Vrei să ieși din aplicație?'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Nu'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Da'),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
@@ -277,16 +296,12 @@ class RegisterPageState extends State<RegisterPage> {
                               repository.addUsers(newUser);
                               formkey.currentState?.reset();
                               setState(() {});
-                              dispose();
-                              Navigator.push(
+                              Navigator.pushAndRemoveUntil(
                                 context,
-                                PageRouteBuilder(
-                                  pageBuilder:
-                                      (context, animation1, animation2) =>
-                                          const LoginPageWidget(),
-                                  transitionDuration: Duration.zero,
-                                  reverseTransitionDuration: Duration.zero,
-                                ),
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LoginPageWidget()),
+                                ModalRoute.withName("/login"),
                               );
                             },
                           ),
@@ -303,15 +318,11 @@ class RegisterPageState extends State<RegisterPage> {
           padding: const EdgeInsets.only(top: 20.0),
           child: FloatingActionButton.extended(
             onPressed: () {
-              dispose();
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) =>
-                      const LoginPageWidget(),
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
-                ),
+                MaterialPageRoute(
+                    builder: (context) => const LoginPageWidget()),
+                ModalRoute.withName("/login"),
               );
             },
             backgroundColor: Colors.red,

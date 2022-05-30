@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:delivery_app/MainDeliveryPage.dart';
 import 'package:delivery_app/MainUserPage.dart';
 import 'package:delivery_app/RegisterPage.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,26 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () async {
+        return await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Exit App'),
+                content: const Text('Vrei să ieși din aplicație?'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Nu'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Da'),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: GestureDetector(
@@ -250,17 +270,29 @@ class LoginPageState extends State<LoginPage> {
                                   image: date['image'] as String,
                                 );
                                 user.ref = ref;
-                                dispose();
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    pageBuilder:
-                                        (context, animation1, animation2) =>
-                                            MainUserPageWidget(user: user),
-                                    transitionDuration: Duration.zero,
-                                    reverseTransitionDuration: Duration.zero,
-                                  ),
-                                );
+                                if (user.role == "user") {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder:
+                                          (context, animation1, animation2) =>
+                                              MainUserPageWidget(user: user),
+                                      transitionDuration: Duration.zero,
+                                      reverseTransitionDuration: Duration.zero,
+                                    ),
+                                  );
+                                } else if (user.role == "delivery") {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation1,
+                                              animation2) =>
+                                          MainDeliveryPageWidget(user: user),
+                                      transitionDuration: Duration.zero,
+                                      reverseTransitionDuration: Duration.zero,
+                                    ),
+                                  );
+                                }
                               }
                             },
                           ),
@@ -279,15 +311,12 @@ class LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onPressed: () {
-                          dispose();
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            PageRouteBuilder(
-                              pageBuilder: (context, animation1, animation2) =>
-                                  const RegisterPageWidget(),
-                              transitionDuration: Duration.zero,
-                              reverseTransitionDuration: Duration.zero,
-                            ),
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const RegisterPageWidget()),
+                            ModalRoute.withName("/register"),
                           );
                         },
                       ),

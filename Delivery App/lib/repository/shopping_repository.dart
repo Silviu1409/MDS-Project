@@ -64,6 +64,20 @@ class ShoppingRepository {
     }
   }
 
+  Stream<QuerySnapshot<Object?>> getActiveDeliveries1() {
+    return collection
+        .where("finished", isEqualTo: true)
+        .where("state", isEqualTo: 1)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Object?>> getActiveDeliveries2() {
+    return collection
+        .where("finished", isEqualTo: true)
+        .where("state", isEqualTo: 2)
+        .snapshots();
+  }
+
   void updateCart(ShoppingCart shoppingCart) async {
     await collection.doc(shoppingCart.ref?.id).update(shoppingCart.toJson());
   }
