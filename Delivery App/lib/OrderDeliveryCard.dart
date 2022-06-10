@@ -76,21 +76,17 @@ class OrderDeliveryCardState extends State<OrderDeliveryCard> {
           onTap: () {},
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 15),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               customText(
                 context,
                 "Plasată pe: ${widget.shoppingCart.datetime}",
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               customText(
                 context,
                 "Adresă de livrare: ${widget.shoppingCart.address}",
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               customText(
                 context,
                 "Total: ${widget.shoppingCart.total.toString()} lei",
@@ -99,6 +95,8 @@ class OrderDeliveryCardState extends State<OrderDeliveryCard> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
+                        SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.02),
                         IconButton(
                           onPressed: () {
                             MainDeliveryPageState.rejected_orders
@@ -116,14 +114,15 @@ class OrderDeliveryCardState extends State<OrderDeliveryCard> {
                           icon: const Icon(Icons.check),
                           color: Colors.white,
                         ),
-                        const SizedBox(
-                          width: 25,
-                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.02),
                       ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
+                        SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.03),
                         IconButton(
                           onPressed: () {
                             widget.shoppingCart.state = 3;
@@ -132,9 +131,8 @@ class OrderDeliveryCardState extends State<OrderDeliveryCard> {
                           icon: const Icon(Icons.check),
                           color: Colors.white,
                         ),
-                        const SizedBox(
-                          width: 25,
-                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.height * 0.02),
                       ],
                     )
             ],

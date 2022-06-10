@@ -132,7 +132,7 @@ class MainDeliveryPageState extends State<MainDeliveryPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.35),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
                   Text(
                     "Comenzi nepreluate",
                     style: TextStyle(
@@ -145,7 +145,7 @@ class MainDeliveryPageState extends State<MainDeliveryPage> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.22,
+                      height: MediaQuery.of(context).size.height * 0.27,
                       child: con
                           ? StreamBuilder<QuerySnapshot>(
                               stream: repository_cart.getActiveDeliveries1(),
@@ -205,7 +205,7 @@ class MainDeliveryPageState extends State<MainDeliveryPage> {
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.22,
+                      height: MediaQuery.of(context).size.height * 0.27,
                       child: con
                           ? StreamBuilder<QuerySnapshot>(
                               stream: repository_cart.getActiveDeliveries2(),
