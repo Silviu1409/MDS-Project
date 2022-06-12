@@ -5,6 +5,7 @@ import 'package:delivery_app/LoginPage.dart';
 import 'package:delivery_app/ShoppingCartPage.dart';
 import 'package:delivery_app/models/shoppingcart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'AccountPage.dart';
 import 'HomePage.dart';
 import 'OrdersPage.dart';
@@ -20,12 +21,12 @@ class MainUserPageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Delivery App main page',
+      title: 'Delivery App main user page',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MainUserPage(title: 'Delivery app main page', user: user),
+      home: MainUserPage(title: 'Delivery app main user page', user: user),
     );
   }
 }
@@ -99,15 +100,33 @@ class MainUserPageState extends State<MainUserPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () async {
+        return await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Exit App'),
+                content: const Text('Vrei să ieși din aplicație?'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Nu'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => SystemNavigator.pop(),
+                    child: const Text('Da'),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: pages[_selectedIndex],
         floatingActionButton: (_selectedIndex == 3)
             ? FloatingActionButton.extended(
                 onPressed: () {
-                  dispose();
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>

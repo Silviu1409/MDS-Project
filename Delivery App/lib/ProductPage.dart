@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery_app/RestaurantPage.dart';
 import 'package:delivery_app/models/restaurant.dart';
-import 'package:delivery_app/repository/produs_repository.dart';
 import 'package:flutter/material.dart';
 
 import 'main.dart';
@@ -60,14 +59,12 @@ class ProductPage extends StatefulWidget {
 }
 
 class ProductPageState extends State<ProductPage> {
-  ProdusRepository repository_produs = ProdusRepository();
-
   bool con = false;
   Timer? timer;
   bool old_con = true;
   bool is_connected = true;
   Timer? timer2;
-  int nr_prod = 1;
+  static int nr_prod = 1;
 
   bool addedprodtocard = false;
   bool mesajafisat = false;
@@ -98,7 +95,18 @@ class ProductPageState extends State<ProductPage> {
     timer?.cancel();
     timer2?.cancel();
     timer3?.cancel();
+    nr_prod = 1;
     super.dispose();
+  }
+
+  static void decrease() {
+    if (nr_prod > 1) {
+      nr_prod -= 1;
+    }
+  }
+
+  static void increase() {
+    nr_prod += 1;
   }
 
   @override
@@ -154,10 +162,8 @@ class ProductPageState extends State<ProductPage> {
                 children: <Widget>[
                   IconButton(
                     onPressed: () {
-                      if (nr_prod > 1) {
-                        nr_prod -= 1;
-                        setState(() {});
-                      }
+                      decrease();
+                      setState(() {});
                     },
                     icon: const Icon(Icons.remove_circle_outline),
                     iconSize: MediaQuery.of(context).size.height * 0.01 * 3.75,
@@ -170,7 +176,7 @@ class ProductPageState extends State<ProductPage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      nr_prod += 1;
+                      increase();
                       setState(() {});
                     },
                     icon: const Icon(Icons.add_circle_outline),
@@ -245,6 +251,7 @@ class ProductPageState extends State<ProductPage> {
           padding: const EdgeInsets.only(top: 20.0),
           child: FloatingActionButton.extended(
             onPressed: () {
+              nr_prod = 1;
               Navigator.push(
                 context,
                 PageRouteBuilder(

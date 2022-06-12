@@ -1,9 +1,13 @@
+import 'package:delivery_app/MainDeliveryPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'LoginPage.dart';
 import 'models/user.dart';
 import 'repository/user_repository.dart';
 
-class AccountPageWidget extends StatelessWidget {
-  const AccountPageWidget({Key? key, required this.user}) : super(key: key);
+class DeliveryAccountPageWidget extends StatelessWidget {
+  const DeliveryAccountPageWidget({Key? key, required this.user})
+      : super(key: key);
   final User user;
 
   @override
@@ -13,20 +17,20 @@ class AccountPageWidget extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: AccountPage(user: user),
+      home: DeliveryAccountPage(user: user),
     );
   }
 }
 
-class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key, required this.user}) : super(key: key);
+class DeliveryAccountPage extends StatefulWidget {
+  const DeliveryAccountPage({Key? key, required this.user}) : super(key: key);
   final User user;
 
   @override
-  State<AccountPage> createState() => AccountPageState();
+  State<DeliveryAccountPage> createState() => DeliveryAccountPageState();
 }
 
-class AccountPageState extends State<AccountPage> {
+class DeliveryAccountPageState extends State<DeliveryAccountPage> {
   var username = "";
   var email = "";
   var password = "";
@@ -125,7 +129,26 @@ class AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () async {
+        return await showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Exit App'),
+                content: const Text('Vrei să ieși din aplicație?'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Nu'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => SystemNavigator.pop(),
+                    child: const Text('Da'),
+                  ),
+                ],
+              ),
+            ) ??
+            false;
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
@@ -400,6 +423,48 @@ class AccountPageState extends State<AccountPage> {
               ),
             ),
           ),
+        ),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          MainDeliveryPageWidget(user: widget.user)),
+                );
+              },
+              backgroundColor: Colors.red,
+              icon: const Icon(Icons.arrow_back),
+              label: const Text("Înapoi"),
+              heroTag: "backbtn",
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.78,
+            ),
+            FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) =>
+                        const LoginPageWidget(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
+              },
+              backgroundColor: Colors.red,
+              icon: const Icon(Icons.logout),
+              label: const Text("Logout"),
+              heroTag: "logoutbtn",
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+          ],
         ),
       ),
     );

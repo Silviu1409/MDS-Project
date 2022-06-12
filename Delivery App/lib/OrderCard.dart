@@ -47,7 +47,7 @@ class OrderCard extends StatefulWidget {
 }
 
 class OrderCardState extends State<OrderCard> {
-  Text customText(BuildContextcontext, String text) {
+  Text customText(BuildContext context, String text) {
     double heightval = MediaQuery.of(context).size.height * 0.01;
 
     return Text(
