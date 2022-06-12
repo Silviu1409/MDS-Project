@@ -1,4 +1,4 @@
-# MDS Project
+# SPT FOOD
 Project created for "Metode de dezvoltare software" . Faculty of Mathematics and Informatics, University of Bucharest.
 
 
@@ -30,4 +30,4 @@ In order to create the backlog for our application we used Trello.[The link for 
 12. As a delivery driver, I want to be able to accept the order.
 13. As a delivery driver, I want to be able to decline the order.
 
-Restaurants will contact delivery_app@gmail.com to add,remove or modify products.
+Restaurants will contact spt_food@gmail.com to add,remove or modify products.
