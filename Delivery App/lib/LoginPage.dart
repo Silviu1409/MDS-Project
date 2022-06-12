@@ -137,6 +137,7 @@ class LoginPageState extends State<LoginPage> {
                           Container(
                             padding: const EdgeInsets.all(30),
                             child: TextFormField(
+                              key: const Key("email"),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               autocorrect: false,
@@ -177,6 +178,7 @@ class LoginPageState extends State<LoginPage> {
                           Container(
                             padding: const EdgeInsets.all(30),
                             child: TextFormField(
+                              key: const Key("passwd"),
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               obscureText: isPasswdHidden,
@@ -225,6 +227,7 @@ class LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           ElevatedButton(
+                            key: const Key("login"),
                             child: const Text('Login'),
                             style: ElevatedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(

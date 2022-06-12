@@ -3,6 +3,7 @@ import 'package:delivery_app/models/shoppingcart.dart';
 import 'package:delivery_app/repository/shopping_repository.dart';
 import 'package:flutter/material.dart';
 
+import 'OrderPageDelivery.dart';
 import 'models/user.dart';
 
 class OrderDeliveryCardWidget extends StatelessWidget {
@@ -67,75 +68,90 @@ class OrderDeliveryCardState extends State<OrderDeliveryCard> {
           Radius.circular(20),
         ),
       ),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.75,
-        decoration: const BoxDecoration(
-            color: Colors.red,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: InkWell(
-          onTap: () {},
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              customText(
+      child: InkWell(
+        child: Container(
+          width: MediaQuery.of(context).size.width * 0.75,
+          decoration: const BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
                 context,
-                "Plasată pe: ${widget.shoppingCart.datetime}",
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              customText(
-                context,
-                "Adresă de livrare: ${widget.shoppingCart.address}",
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              customText(
-                context,
-                "Total: ${widget.shoppingCart.total.toString()} lei",
-              ),
-              widget.shoppingCart.state == 1
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.02),
-                        IconButton(
-                          onPressed: () {
-                            MainDeliveryPageState.rejected_orders
-                                .add(widget.shoppingCart.ref!.id);
-                            MainDeliveryPageState.modif_order = true;
-                          },
-                          icon: const Icon(Icons.cancel_outlined),
-                          color: Colors.white,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            widget.shoppingCart.state = 2;
-                            repository_cart.updateCart(widget.shoppingCart);
-                          },
-                          icon: const Icon(Icons.check),
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.02),
-                      ],
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.03),
-                        IconButton(
-                          onPressed: () {
-                            widget.shoppingCart.state = 3;
-                            repository_cart.updateCart(widget.shoppingCart);
-                          },
-                          icon: const Icon(Icons.check),
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.height * 0.02),
-                      ],
-                    )
-            ],
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      OrderPageDeliveryWidget(
+                    shoppingCart: widget.shoppingCart,
+                    user: widget.user,
+                  ),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            },
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                customText(
+                  context,
+                  "Plasată pe: ${widget.shoppingCart.datetime}",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                customText(
+                  context,
+                  "Adresă de livrare: ${widget.shoppingCart.address}",
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                customText(
+                  context,
+                  "Total: ${widget.shoppingCart.total.toString()} lei",
+                ),
+                widget.shoppingCart.state == 1
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.02),
+                          IconButton(
+                            onPressed: () {
+                              MainDeliveryPageState.rejected_orders
+                                  .add(widget.shoppingCart.ref!.id);
+                              MainDeliveryPageState.modif_order = true;
+                            },
+                            icon: const Icon(Icons.cancel_outlined),
+                            color: Colors.white,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              widget.shoppingCart.state = 2;
+                              repository_cart.updateCart(widget.shoppingCart);
+                            },
+                            icon: const Icon(Icons.check),
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.02),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.03),
+                          IconButton(
+                            onPressed: () {
+                              widget.shoppingCart.state = 3;
+                              repository_cart.updateCart(widget.shoppingCart);
+                            },
+                            icon: const Icon(Icons.check),
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                              width: MediaQuery.of(context).size.height * 0.02),
+                        ],
+                      )
+              ],
+            ),
           ),
         ),
       ),

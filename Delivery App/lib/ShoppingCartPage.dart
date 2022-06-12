@@ -43,7 +43,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
   List<Map<String, dynamic>> shoppingcartdet = <Map<String, dynamic>>[];
   late ShoppingCart shoppingCart;
 
-  num total = 0;
+  static num total = 0;
   bool con = false, old_con = true, is_connected = true, isFormValid = true;
   Timer? timer, timer2;
   static bool loading = false;
@@ -68,6 +68,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
     super.dispose();
     timer?.cancel();
     timer2?.cancel();
+    total = 0;
   }
 
   AwaitConnection() async {
@@ -91,6 +92,12 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
     old_con = con;
   }
 
+  static void calculate_total(List<num> preturi, List<int> cant) {
+    for (var i = 0; i < preturi.length; i++) {
+      total += preturi[i] * cant[i];
+    }
+  }
+
   void getproducts() async {
     String cart_ref =
         await repository_cart.searchActiveShoppingcarts(widget.user.ref);
@@ -101,30 +108,30 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
       List<OrderItem> orderitems =
           await repository_orderitem.getOrderItemsforShoppingCart(cart_ref);
       List<int> cant = await repository_orderitem.getCant(cart_ref);
-      num pret_total = 0;
       List<Map<String, dynamic>> shoppingcartitems = [];
+      List<num> preturi = [];
+      total = 0;
       int j = 0;
       for (var i = 0; i < produse.length; i++) {
         var doc1 = produse[i];
         var doc2 = orderitems[i];
         num pret = doc1.get("price");
-        int c = cant[j];
+        preturi.add(pret);
         Map<String, dynamic> prod = {
           "nume": doc1.get("name"),
           "pret": pret,
-          "cantitate": c,
+          "cantitate": cant[j],
           "orderitem": OrderItem(
               cantitate: doc2.cantitate,
               shoppingcart: doc2.shoppingcart,
               produs: doc2.produs),
         };
         prod["orderitem"].ref = doc2.ref;
-        pret_total += pret * c;
         shoppingcartitems.add(prod);
         j += 1;
       }
+      calculate_total(preturi, cant);
       shoppingcartdet = shoppingcartitems;
-      total = pret_total;
     }
     setState(() {
       loading = false;
@@ -271,6 +278,7 @@ class ShoppingCartPageState extends State<ShoppingCartPage> {
                       shoppingCart.address = address;
                       shoppingCart.finished = true;
                       shoppingCart.total = num.parse(total.toStringAsFixed(2));
+                      shoppingCart.state = 1;
                       DateTime now = DateTime.now();
                       DateTime data = DateTime(now.year, now.month, now.day,
                           now.hour, now.minute, now.second);
